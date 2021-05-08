@@ -11,11 +11,9 @@ import { getSubscription } from './PushNotification/PushNotification'
 
 export default function App() {
     const [userStore, setUserStore] = useState({
-        username: 'moin',
-        isLoggedIn: true,
+        username: '',
+        isLoggedIn: false,
     });
-
-
     // PushNotification 
     //Subcription
     if (userStore.isLoggedIn && userStore.username !== '') {
