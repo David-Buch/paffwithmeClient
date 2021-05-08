@@ -18,6 +18,7 @@ function getSubscription(username) {
     Notification.requestPermission(function (status) {
         console.log('Notification permission status:', status);
     });
+
     navigator.serviceWorker.ready.then(function (registration) {
         console.log('Registration successful, scope is:', registration.scope);
         registration.pushManager.getSubscription().then(function (sub) {
@@ -28,6 +29,7 @@ function getSubscription(username) {
                 // We have a subscription, update the database
                 // Check if subcription object is the same as the one in the db
                 console.log('Subscription object: ', sub);
+                subscribeUser(username);
             }
         });
     });
@@ -76,8 +78,6 @@ async function sendSubscriptionToBackEnd(endPoint, auth, username) {
             }
         });
 }
-
-
 
 export { getSubscription };
 

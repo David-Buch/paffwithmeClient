@@ -17,11 +17,8 @@ export default function App() {
     // PushNotification 
     //Subcription
     if (userStore.isLoggedIn && userStore.username !== '') {
-        console.log('hi');
         getSubscription(userStore.username);
     }
-
-
     return (
         <UserContext.Provider value={{ userStore, setUserStore }}>
             {!userStore.isLoggedIn ? (
