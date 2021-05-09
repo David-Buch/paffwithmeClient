@@ -30,7 +30,7 @@ function getSubscription(username) {
             } else {
                 // We have a subscription, update the database
                 // Check if subcription object is the same as the one in the db
-                console.log('Subscription object: ', sub);
+                console.log('Have a Subscription object: ');
                 subscribeUser(username);
             }
         });
@@ -45,9 +45,7 @@ function subscribeUser(username) {
                 applicationServerKey: urlBase64ToUint8Array(publicKey)
 
             }).then(function (sub) {
-                var subJSObject = JSON.parse(JSON.stringify(sub));
-                sendSubscriptionToBackEnd(subJSObject.endpoint, subJSObject.keys.auth, username);
-                console.log('Endpoint URL: ', subJSObject.endpoint);
+                sendSubscriptionToBackEnd(sub.endpoint, '', username);
             }).catch(function (e) {
 
                 if (Notification.permission === 'denied') {
