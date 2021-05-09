@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const publicKey = 'BEfTrbmLEi8GZXmNyPBr7lUhaxCc6-OGO8ygoCk2l4ljF81cVD9kkNSzmsMqE4k-r9el-adxNQwB1glNryD4AcE';
 function urlBase64ToUint8Array(base64String) {
     const padding = "=".repeat((4 - base64String.length % 4) % 4);
@@ -58,26 +60,25 @@ function subscribeUser(username) {
 }
 
 async function sendSubscriptionToBackEnd(endPoint, auth, username) {
-    console.log(JSON.stringify({ username: username, endpoint: endPoint, authKey: auth }));
-    return await fetch('https://paffwithme.herokuapp.com/notification/subscribe', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username: username, endpoint: endPoint, authKey: auth })
-    })
-        .then(function (response) {
-            if (!response.success) {
-                throw new Error('Bad status code from server.');
-            }
-            return response.json();
-        })
-        .then(function (responseData) {
-            if (!(responseData.data && responseData.data.success)) {
-                throw new Error('Bad response from server.');
-            }
+    try {
+        const response = await axios.post('https://paffwithme.herokuapp.com/notification/subscribe', {
+            username: username,
+            endpoint: endPoint,
+            authKey: auth
         });
-}
+        console.log(response.data);
+        console.log(response);
+        if (!response.data.success) {
+            throw new Error('Bad status code from server.');
+        } else {
+            return response.json();
+        }
+
+    } catch (error) {
+        console.log(error);
+        throw new Error('Bad response from server. Error:' + error);
+    }
+};
 
 export { getSubscription };
 

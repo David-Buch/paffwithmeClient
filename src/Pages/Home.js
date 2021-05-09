@@ -50,8 +50,9 @@ export default function Home() {
     const handleSend = () => {
         setBsOpen(false);
         console.log(pushInfo);
-        var pushWorked = sendPushtoAll(userStore.username, pushInfo.StartTime, pushInfo.EndTime, pushInfo.Location);
-        console.log(pushWorked);
+        sendPushtoAll(userStore.username, pushInfo.StartTime, pushInfo.EndTime, pushInfo.Location).then((res) => {
+            console.log(res);
+        });
         setBtnDisabeld(true);
         //just for testing of course
         setTimeout(() => {

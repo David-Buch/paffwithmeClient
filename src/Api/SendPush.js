@@ -1,20 +1,22 @@
 import axios from 'axios';
 
-export async function sendPushtoAll(pushUsername, pushStartTime, pushEndTime, pushLocation) {
-
-    await axios.post('https://paffwithme.herokuapp.com/notification/sendtoAll', {
-        username: pushUsername,
-        location: pushLocation,
-        startTime: pushStartTime,
-        endTime: pushEndTime
-    }).then((res) => {
-        if (res.data.success) {
+async function sendPushtoAll(pushUsername, pushStartTime, pushEndTime, pushLocation) {
+    try {
+        const response = await axios.post(('https://paffwithme.herokuapp.com/notification/sendtoAll'), {
+            username: pushUsername,
+            location: pushLocation,
+            startTime: pushStartTime,
+            endTime: pushEndTime
+        });
+        console.log(response);
+        if (response.data.success) {
             console.log('Push worked');
-            return true;
+            return response;
         }
-        else {
-            console.log('Push NOT worked');
-            return false;
-        }
-    })
-}
+
+    } catch (error) {
+        console.log(error);
+        throw new Error('Bad response from server. Error:' + error);
+    }
+};
+export { sendPushtoAll };
