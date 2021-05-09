@@ -45,7 +45,8 @@ function subscribeUser(username) {
                 applicationServerKey: urlBase64ToUint8Array(publicKey)
 
             }).then(function (sub) {
-                sendSubscriptionToBackEnd(sub.endpoint, sub.getKey("auth"), username);
+                JSON.parse(JSON.stringify(sub));
+                sendSubscriptionToBackEnd(sub.endpoint, sub.keys.auth, username);
                 console.log('Endpoint URL: ', sub.endpoint);
             }).catch(function (e) {
 
@@ -75,7 +76,6 @@ async function sendSubscriptionToBackEnd(endPoint, auth, username) {
         }
 
     } catch (error) {
-        console.log(error);
         throw new Error('Bad response from server. Error:' + error);
     }
 };
