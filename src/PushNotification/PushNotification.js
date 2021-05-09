@@ -45,9 +45,9 @@ function subscribeUser(username) {
                 applicationServerKey: urlBase64ToUint8Array(publicKey)
 
             }).then(function (sub) {
-                JSON.parse(JSON.stringify(sub));
-                sendSubscriptionToBackEnd(sub.endpoint, sub.keys.auth, username);
-                console.log('Endpoint URL: ', sub.endpoint);
+                var subJSObject = JSON.parse(JSON.stringify(sub));
+                sendSubscriptionToBackEnd(subJSObject.endpoint, subJSObject.keys.auth, username);
+                console.log('Endpoint URL: ', subJSObject.endpoint);
             }).catch(function (e) {
 
                 if (Notification.permission === 'denied') {
