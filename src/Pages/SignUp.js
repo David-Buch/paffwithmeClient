@@ -77,7 +77,8 @@ export default function SignUp() {
                     if (res.data.success) {
                         setUserStore({
                             username: data.username,
-                            isLoggedIn: true
+                            isLoggedIn: true,
+                            isLoading: true
                         });
                     }
                     else {

@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import CustomButton from '../Components/CustomButton';
 import { Button, makeStyles } from '@material-ui/core';
 import './pages.css';
 import BottomSheet from '../Components/BottomSheet';
 import SendModal from '../Components/SendModal';
-import { sendPushtoAll } from '../Api/SendPush';
-import { UserContext } from '../Data/UserContext';
+//import { sendPushtoAll } from '../Api/SendPush';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,39 +27,32 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
     const classes = useStyles();
-    const { userStore } = useContext(UserContext);
-    const [pushInfo, setPushInfo] = useState({
+    /*const [pushInfo, setPushInfo] = useState({
         StartTime: null,
         EndTime: null,
         Location: ''
     });
+    */
     const [isModalOpen, setModalOpen] = useState(false);
     const [isBsOpen, setBsOpen] = useState(false);
     const [btnDisabled, setBtnDisabeld] = useState(false);
 
-    const handelEndTime = (val) => {
-        setPushInfo({ ...pushInfo, Endtime: val })
-    };
-    const handelLocation = (val) => {
-        setPushInfo({ ...pushInfo, Location: val })
-    };
-    const handelStartTime = (val) => {
-        setPushInfo({ ...pushInfo, StartTime: val })
-    };
-
-    const handleSend = () => {
+    const handleSend = (event, sendData) => {
+        event.preventDefault();
+        //Set the Sending Data
+        console.log(sendData);
         setBsOpen(false);
-        console.log(pushInfo);
+        {/*
         sendPushtoAll(userStore.username, pushInfo.StartTime, pushInfo.EndTime, pushInfo.Location).then((res) => {
             console.log(res);
         });
+        */}
         setBtnDisabeld(true);
         //just for testing of course
         setTimeout(() => {
             setModalOpen(true);
             setBtnDisabeld(false);
         }, 3000)
-
     };
 
     return (
@@ -109,6 +102,7 @@ export default function Home() {
                         >
                             Enjoy a Pipe!
                         </Button>
+
                     </div>
 
                 </Grid>
@@ -116,14 +110,15 @@ export default function Home() {
             <BottomSheet
                 open={isBsOpen}
                 close={() => setBsOpen(false)}
-                pressedSend={(e) => handleSend}
-                onChangeST={(e) => handelStartTime(e.target.value)}
-                onChangeET={(e) => handelEndTime(e.target.value)}
-                onChangeLO={(e) => handelLocation(e.target.value)} />
+                onSend={(event, sendData) => handleSend(event, sendData)}
+            />
 
             <SendModal
                 open={isModalOpen}
                 close={() => setModalOpen(false)} />
         </div>
+
+
+
     );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Drawer from './Layout/Drawer';
 import { UserContext } from './Data/UserContext';
 import {
@@ -7,31 +7,36 @@ import {
 } from 'react-router-dom';
 import SignIn from './Pages/SignIn';
 import SignUp from './Pages/SignUp';
-import { getSubscription } from './PushNotification/PushNotification'
+import Loading from './Pages/Loading';
+
 
 export default function App() {
     const [userStore, setUserStore] = useState({
         username: '',
         isLoggedIn: false,
+        isLoading: false,
     });
-    // PushNotification 
-    //Subcription
-    if (userStore.isLoggedIn && userStore.username !== '') {
-        getSubscription(userStore.username);
-    }
+
     return (
         <UserContext.Provider value={{ userStore, setUserStore }}>
-            {!userStore.isLoggedIn ? (
-                <Router>
-                    <Route exact path='/' component={SignIn} />
-                    <Route path='/signup' component={SignUp} />
-                </Router >
+            {userStore.isLoading ?
+                (<Loading />) :
+                (
+                    <div>
+                        {!userStore.isLoggedIn ? (
+                            <Router>
+                                <Route exact path='/' component={SignIn} />
+                                <Route path='/signup' component={SignUp} />
+                            </Router >
 
-            ) : (
-                <div style={{ height: '100vH', background: '#311d3f' }}>
-                    <Drawer />
-                </div>
-            )}
+                        ) : (
+                            <div style={{ height: '100vH', position: 'fixed', background: '#311d3f' }}>
+                                <Drawer />
+                            </div>
+                        )}
+                    </div>
+                )}
         </UserContext.Provider>
     );
 }
+

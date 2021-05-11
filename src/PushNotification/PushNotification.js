@@ -21,7 +21,7 @@ function getSubscription(username) {
         console.log('Notification permission status:', status);
     });
 
-    navigator.serviceWorker.ready.then(function (registration) {
+    return navigator.serviceWorker.ready.then(function (registration) {
         console.log('Registration successful, scope is:', registration.scope);
         registration.pushManager.getSubscription().then(function (sub) {
             if (sub === null) {
@@ -65,7 +65,6 @@ async function sendSubscriptionToBackEnd(endPoint, auth, username) {
             endpoint: endPoint,
             authKey: auth
         });
-        console.log(response.data);
         console.log(response);
         if (!response.data.success) {
             throw new Error('Bad status code from server.');
@@ -74,7 +73,7 @@ async function sendSubscriptionToBackEnd(endPoint, auth, username) {
         }
 
     } catch (error) {
-        throw new Error('Bad response from server. Error:' + error);
+        throw new Error('Bad response from server.' + error);
     }
 };
 

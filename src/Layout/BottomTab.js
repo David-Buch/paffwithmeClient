@@ -40,6 +40,8 @@ export default function BottomTab(props) {
     const classes = useStyles();
     const routes = ['/home', '/live', '/stats'];
 
+
+
     return (
         <Router>
             <Route path='/'> {//auf home aendern

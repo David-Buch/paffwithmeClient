@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Sheet from 'react-modal-sheet';
-import { Grid, makeStyles, Typography } from '@material-ui/core';
+import { Button, Grid, makeStyles, Typography } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { HiLocationMarker } from "react-icons/hi";
-import Fab from '@material-ui/core/Fab';
 import { BiSend } from 'react-icons/bi';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 
 const CustomSheet = styled(Sheet)`
@@ -35,89 +35,105 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
   },
   content: {
-    marginTop: theme.spacing(2)
+
+    height: '90%',
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: 150,
   },
-  send: {
-    position: 'fixed',
-    top: 0,
-    right: 0,
-    paddingRight: 5,
+  buttonDiv: {
+    display: 'flex', justifyContent: 'center',
   },
+  button: { paddingTop: 10, width: '60vW' },
+  timetf: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  location: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 315,
+
+  },
+  grid: {
+    marginTop: theme.spacing(3),
+  }
 
 
 }));
 
 export default function BottomSheet(props) {
   const classes = useStyles();
+  const [sendData, setSendData] = useState({
+    location: '',
+    startTime: '',
+    endTime: ''
+  });
+
+  const validation = () => {
+    let temp = {};
+    temp.startTime = sendData.startTime ? "" : "This field is required"
+    temp.endTime = sendData.endTime ? "" : "This field is required"
+    temp.location = sendData.location ? "" : "This field is required"
+
+  };
+
   return (
     <div>
       <CustomSheet
         isOpen={props.open}
         onClose={props.close}
-        snapPoints={[500, 300]}
+        snapPoints={[450, 350]}
         initialSnap={1}
         onSnap={snapIndex =>
           console.log('> Current snap point index:', snapIndex)}>
         <CustomSheet.Container>
           <CustomSheet.Header />
           <CustomSheet.Content>
-            <div className={classes.send}>
-              <Fab
-                color='secondary'
-                aria-label="send"
-                className={classes.sendIcon}
-                onClick={props.pressedSend}>
-                <BiSend size={30} />
-              </Fab>
-            </div>
             <div className={classes.content}>
-              <Grid
-                spacing={3}
-                container
-                direction="column"
-                justify="center"
-                alignItems="center"
-              >
-                <Grid item xs={12}>
-                  <Typography variant='h6' noWrap>
-                    Smoking Time!
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}
+              <form
+                className={classes.container}
+                onSubmit={(event) => props.onSend(event, sendData)}
+                onError={errors => console.log(errors)}>
+                <Grid
+                  className={classes.grid}
+                  container
+                  spacing={2}
+                  direction="column"
+                  justify="flex-start"
+                  alignItems="center"
                 >
-                  <div>
 
-                    <form className={classes.container} noValidate>
+                  <Grid item xs={12}>
+                    <div className={classes.timetf}>
                       <TextField
+                        className={classes.textField}
                         id="time"
                         color='secondary'
                         label="Starting Time"
                         variant='outlined'
                         type="time"
-                        defaultValue="07:30"
-                        className={classes.textField}
-                        onChange={props.onChangeST}
+                        onChange={(e) => setSendData({ ...sendData, startTime: e.target.value })}
                         InputLabelProps={{
                           shrink: true,
                         }}
                         inputProps={{
                           step: 300, // 5 min
                         }}
+                        validators={["required"]}
+                        errorMessages={["Starting Time is required"]}
+
                       />
                       <TextField
+                        className={classes.textField}
                         id="time"
                         color='secondary'
                         label="Ending Time"
                         variant='outlined'
                         type="time"
-                        defaultValue="07:30"
-                        className={classes.textField}
-                        onChange={props.onChangeET}
+                        onChange={(e) => setSendData({ ...sendData, endTime: e.target.value })}
                         InputLabelProps={{
                           shrink: true,
                         }}
@@ -125,31 +141,42 @@ export default function BottomSheet(props) {
                           step: 300, // 5 min
                         }}
                       />
-                    </form>
-                  </div>
+                    </div>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      className={classes.location}
+                      id="tfLocation"
+                      variant='outlined'
+                      color='secondary'
+                      label="Location"
+                      placeholder='Your Location'
+                      onChange={(e) => setSendData({ ...sendData, location: e.target.value })}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <HiLocationMarker />
+                          </InputAdornment>
+                        ),
+                      }}
+
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <div className={classes.buttonDiv}>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        endIcon={<BiSend />}
+                      >
+                        Send
+                  </Button>
+                    </div>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}
-                >
-                  <TextField
-                    className={classes.location}
-                    id="tfLocation"
-                    variant='outlined'
-                    color='secondary'
-                    label="Location"
-                    size='medium'
-                    fullWidth
-                    placeholder='Your Location'
-                    onChange={props.onChangeLocation}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <HiLocationMarker />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-              </Grid>
+              </form>
             </div>
           </CustomSheet.Content>
         </CustomSheet.Container>
