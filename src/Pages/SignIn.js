@@ -66,6 +66,7 @@ export default function SignIn() {
         onSubmit: (values) => {
             console.log(values); //
             loginUser(values.username, values.password).then(response => {
+                console.log(response);
                 if (response.success) {
                     console.log('hi');
                     setUserStore({

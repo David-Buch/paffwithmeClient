@@ -69,6 +69,7 @@ export default function SignUp() {
         onSubmit: (values) => {
             console.log(values); //
             signupUser(values.username, values.password).then(response => {
+                console.log(response);
                 if (response.success) {
                     console.log('hi');
                     setUserStore({
