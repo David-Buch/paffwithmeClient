@@ -6,10 +6,13 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
 import { CgProfile } from 'react-icons/cg';
 import { UserContext } from '../Data/UserContext';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
 import axios from 'axios';
+import { signupUser } from '../Helpers/Api';
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -31,63 +34,53 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
+const validationSchema = Yup.object({
+    username: Yup
+        .string('Enter your username')
+        .matches(/^[aA-zZ\s]+$/, "Only letters are allowed in your username ")
+        .min(4, "username must be at least 4 characters long")
+        .required('username is required'),
+    password: Yup
+        .string('Enter your password')
+        .min(6, 'Password must be at least 6 characters long')
+        .max(18, 'Password cant be longer than 18 characters')
+        .required('password time is required'),
+    password2: Yup
+        .string('Enter your password')
+        .test('password-match', 'Passwords do not match', function (value) {
+            let { password } = this.parent;
+            return password == value;
+        })
+        .required('password time is required'),
+});
+
 export default function SignUp() {
     const classes = useStyles();
-    const { setUserStore } = useContext(UserContext);
-    const [data, setData] = useState({
-        username: '',
-        password: '',
-        password2: '',
+    const { userStore, setUserStore } = useContext(UserContext);
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            password: '',
+            password2: ''
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            setUserStore({ ...userStore, isLoading: true });
+            console.log(values); //
+            let response = signupUser(values.username, values.password);
+            console.log(response); //
+            if (response.message) { alert(response.message); }
+            else {
+                setUserStore({
+                    username: response.username,
+                    isLoggedIn: true,
+                    //isLoading: true
+                });
+            }
+        }
     });
 
-    const textInputChange = (val) => {
-        if (val.length >= 4) {
-            setData({
-                ...data,
-                username: val,
-            });
-        }
-    }
-
-    const handelPasswordChange = (val) => {
-        if (val.length >= 6) {
-            setData({
-                ...data,
-                password: val,
-            });
-        }
-    }
-    const handelConfirmPasswordChange = (val) => {
-        if (val.length >= 6) {
-            setData({
-                ...data,
-                password2: val,
-            });
-        }
-    }
-
-    function afterSubmission(event) {
-        event.preventDefault();
-        if (data.password === data.password2) {
-            axios.post('https://paffwithme.herokuapp.com/register',
-                {
-                    username: data.username,
-                    password: data.password
-                }).then((res) => {
-                    if (res.data.success) {
-                        setUserStore({
-                            username: data.username,
-                            isLoggedIn: true,
-                            isLoading: true
-                        });
-                    }
-                    else {
-                        if (res.data.error) { console.log(res.data.error); }
-                        if (res.data.message) { console.log(res.data.message); }
-                    }
-                });
-        }
-    }
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -98,18 +91,20 @@ export default function SignUp() {
                 <Typography component="h1" variant="h5">
                     Sign Up
         </Typography>
-                <form className={classes.form} noValidate onSubmit={afterSubmission}>
+                <form className={classes.form} onSubmit={formik.handleSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
+                        id="username"
                         label="Username"
                         name="username"
-                        autoComplete="username"
-                        autoFocus
-                        onChange={(e) => textInputChange(e.target.value)}
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
+                        error={formik.touched.username && Boolean(formik.errors.username)}
+                        helperText={formik.touched.username && formik.errors.username}
+
                     />
                     <TextField
                         variant="outlined"
@@ -120,7 +115,10 @@ export default function SignUp() {
                         label="Password"
                         type="password"
                         id="password"
-                        onChange={(e) => handelPasswordChange(e.target.value)}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        error={formik.touched.password && Boolean(formik.errors.password)}
+                        helperText={formik.touched.password && formik.errors.password}
 
                     />
                     <TextField
@@ -132,7 +130,11 @@ export default function SignUp() {
                         label="Confirm Password"
                         type="password"
                         id="password2"
-                        onChange={(e) => handelConfirmPasswordChange(e.target.value)}
+                        value={formik.values.password2}
+                        onChange={formik.handleChange}
+                        error={formik.touched.password2 && Boolean(formik.errors.password2)}
+                        helperText={formik.touched.password2 && formik.errors.password2}
+
 
                     />
                     <Button

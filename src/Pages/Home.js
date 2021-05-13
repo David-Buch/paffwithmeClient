@@ -5,7 +5,7 @@ import { Button, makeStyles } from '@material-ui/core';
 import './pages.css';
 import BottomSheet from '../Components/BottomSheet';
 import SendModal from '../Components/SendModal';
-//import { sendPushtoAll } from '../Api/SendPush';
+import { BottomSheetContext } from '../Data/BottomSheetContext';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,33 +27,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
     const classes = useStyles();
-    /*const [pushInfo, setPushInfo] = useState({
-        StartTime: null,
-        EndTime: null,
-        Location: ''
-    });
-    */
-    const [isModalOpen, setModalOpen] = useState(false);
     const [isBsOpen, setBsOpen] = useState(false);
+
+    // in SheetForm i guess
+    const [isModalOpen, setModalOpen] = useState(false);
     const [btnDisabled, setBtnDisabeld] = useState(false);
 
-    const handleSend = (event, sendData) => {
-        event.preventDefault();
-        //Set the Sending Data
-        console.log(sendData);
-        setBsOpen(false);
-        {/*
-        sendPushtoAll(userStore.username, pushInfo.StartTime, pushInfo.EndTime, pushInfo.Location).then((res) => {
-            console.log(res);
-        });
-        */}
-        setBtnDisabeld(true);
-        //just for testing of course
-        setTimeout(() => {
-            setModalOpen(true);
-            setBtnDisabeld(false);
-        }, 3000)
-    };
 
     return (
         <div className={classes.root}>
@@ -107,12 +86,12 @@ export default function Home() {
 
                 </Grid>
             </Grid>
-            <BottomSheet
-                open={isBsOpen}
-                close={() => setBsOpen(false)}
-                onSend={(event, sendData) => handleSend(event, sendData)}
-            />
-
+            <BottomSheetContext.Provider value={{ isBsOpen, setBsOpen }}>
+                <BottomSheet
+                    open={isBsOpen}
+                    close={() => setBsOpen(false)}
+                />
+            </BottomSheetContext.Provider>
             <SendModal
                 open={isModalOpen}
                 close={() => setModalOpen(false)} />

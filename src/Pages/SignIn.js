@@ -9,10 +9,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
 import { UserContext } from '../Data/UserContext';
-import axios from 'axios';
 import { CgProfile } from 'react-icons/cg';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { loginUser } from '../Helpers/Api';
 
 const useStyles = makeStyles((theme) => ({
     SignInRoot: {
@@ -39,53 +40,44 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const validationSchema = Yup.object({
+    username: Yup
+        .string('Enter your username')
+        .matches(/^[aA-zZ\s]+$/, "Only letters are allowed in your username ")
+        .min(4, "username must be at least 4 characters long")
+        .required('username is required'),
+    password: Yup
+        .string('Enter your password')
+        .min(6, 'Password must be at least 6 characters long')
+        .max(18, 'Password cant be longer than 18 characters')
+        .required('password time is required'),
+});
 
 export default function SignIn() {
     const classes = useStyles();
     const { userStore, setUserStore } = useContext(UserContext);
-    const [userData, setUserData] = useState({
-        username: '',
-        password: '',
+
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            password: ''
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            setUserStore({ ...userStore, isLoading: true });
+            console.log(values); //
+            let response = loginUser(values.username, values.password);
+            console.log(response); //
+            if (response.message) { alert(response.message); }
+            else {
+                setUserStore({
+                    username: response.username,
+                    isLoggedIn: true,
+                    //isLoading: true
+                });
+            }
+        }
     });
-
-    const textInputChange = (val) => {
-        if (val.length >= 4) {
-            setUserData({
-                ...userData,
-                username: val,
-            });
-        }
-    }
-
-    const handelPasswordChange = (val) => {
-        if (val.length >= 6) {
-            setUserData({
-                ...userData,
-                password: val,
-            });
-        }
-    }
-    function afterSubmission(event) {
-        event.preventDefault();
-        axios.post('https://paffwithme.herokuapp.com/login',
-            {
-                username: userData.username,
-                password: userData.password
-            }).then((res) => {
-                if (res.data.success) {
-                    setUserStore({
-                        username: res.data.username,
-                        isLoggedIn: true,
-                        isLoading: true
-                    });
-                }
-                else {
-                    if (res.data.error) { console.log(res.data.error); }
-                    if (res.data.message) { console.log(res.data.message); }
-                }
-            });
-        console.log(userStore);
-    }
 
     return (
         <Container component="main" maxWidth="xs" className={classes.SignInRoot}>
@@ -97,18 +89,19 @@ export default function SignIn() {
                 <Typography component="h1" variant="h5">
                     Log in
         </Typography>
-                <form className={classes.form} noValidate onSubmit={afterSubmission}>
+                <form className={classes.form} onSubmit={formik.handleSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
+                        id="username"
                         label="Username"
                         name="username"
-                        autoComplete="username"
-                        autoFocus
-                        onChange={(e) => textInputChange(e.target.value)}
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
+                        error={formik.touched.username && Boolean(formik.errors.username)}
+                        helperText={formik.touched.username && formik.errors.username}
                     />
                     <TextField
                         variant="outlined"
@@ -119,8 +112,10 @@ export default function SignIn() {
                         label="Password"
                         type="password"
                         id="password"
-                        autoComplete="current-password"
-                        onChange={(e) => handelPasswordChange(e.target.value)}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        error={formik.touched.password && Boolean(formik.errors.password)}
+                        helperText={formik.touched.password && formik.errors.password}
                     />
                     <Button
                         type="submit"
