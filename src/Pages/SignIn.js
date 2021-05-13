@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Alert from '@material-ui/lab/Alert'
 import { UserContext } from '../Data/UserContext';
 import { CgProfile } from 'react-icons/cg';
 import * as Yup from 'yup';
@@ -70,15 +71,15 @@ export default function SignIn() {
                 if (response.success) {
                     console.log('hi');
                     setUserStore({
-                        username: response.username,
+                        username: values.username,
                         isLoggedIn: true,
                         isLoading: false
                     });
                 }
                 else {
                     if (response.message) {
-                        console.log(response.data.message);
-                        alert(response.message);
+                        console.log(response.message);
+                        <Alert severity='error'>{response.message}</Alert>
                     } else { console.log(response); }
                 }
             })

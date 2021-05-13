@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Alert from '@material-ui/lab/Alert';
 import { CgProfile } from 'react-icons/cg';
 import { UserContext } from '../Data/UserContext';
 import * as Yup from 'yup';
@@ -80,8 +81,8 @@ export default function SignUp() {
                 }
                 else {
                     if (response.message) {
-                        console.log(response.data.message);
-                        alert(response.message);
+                        console.log(response.message);
+                        <Alert severity='error'>{response.message}</Alert>
                     } else { console.log(response); }
                 }
             })
