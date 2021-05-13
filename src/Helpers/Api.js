@@ -26,28 +26,22 @@ export function loginUser(username, password) {
             password: password
         }).then(res => res.data)
         .catch(error => {
-            console.log(error)
+            console.log(error);
             throw new Error(error);
         });
 }
 
-async function signupUser(username, password) {
-    try {
-        const response = await axios.post(('https://paffwithme.herokuapp.com/register'),
-            {
-                username: username,
-                password: password
-            })
-        if (response.data.success) {
-            return response.data;
-        } if (response.data.message) {
-            console.log(response.data.message);
-            return response.data;
-        }
-    } catch (error) {
-        console.log(error);
-    }
+export function signupUser(username, password) {
+
+    return axios.post(('https://paffwithme.herokuapp.com/register'),
+        {
+            username: username,
+            password: password
+        }).then(res => res.data)
+        .catch(error => {
+            console.log(error);
+            throw new Error(error);
+        });
 }
 
-
-export { sendPushtoAll, signupUser };
+export { sendPushtoAll };

@@ -68,17 +68,23 @@ export default function SignUp() {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             console.log(values); //
-            let response = signupUser(values.username, values.password);
-            console.log(response); //
-            if (response.message) { alert(response.message); }
-            else {
-                setUserStore({
-                    username: response.username,
-                    isLoggedIn: true,
-                    //isLoading: true
-                });
-            }
-        }
+            signupUser(values.username, values.password).then(response => {
+                if (response.success) {
+                    console.log('hi');
+                    setUserStore({
+                        username: response.username,
+                        isLoggedIn: true,
+                        isLoading: false
+                    });
+                }
+                else {
+                    if (response.message) {
+                        console.log(response.data.message);
+                        alert(response.message);
+                    } else { console.log(response); }
+                }
+            })
+        },
     });
 
     return (

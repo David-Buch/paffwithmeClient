@@ -73,10 +73,12 @@ export default function SignIn() {
                         isLoggedIn: true,
                         isLoading: false
                     });
-
-                } if (response.message) {
-                    console.log(response.data.message);
-                    alert(response.message);
+                }
+                else {
+                    if (response.message) {
+                        console.log(response.data.message);
+                        alert(response.message);
+                    } else { console.log(response); }
                 }
             })
         },
