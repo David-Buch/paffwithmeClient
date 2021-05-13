@@ -17,10 +17,19 @@ import { useFormik } from 'formik';
 import { loginUser } from '../Helpers/Api';
 
 const useStyles = makeStyles((theme) => ({
-    SignInRoot: {
-        display: 'flex',
+
+    root: {
         height: '100vh',
         width: '100vW',
+    },
+    errorDisplay: {
+        display: 'flex',
+        paddingTop: 10,
+        justifyContent: 'center'
+    },
+    SignInRoot: {
+        display: 'flex',
+        justifyContent: 'center',
     },
     paper: {
         marginTop: theme.spacing(8),
@@ -56,7 +65,11 @@ const validationSchema = Yup.object({
 
 export default function SignIn() {
     const classes = useStyles();
-    const { userStore, setUserStore } = useContext(UserContext);
+    const { setUserStore } = useContext(UserContext);
+    const [error, setError] = useState({
+        isError: false,
+        message: ''
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -79,7 +92,8 @@ export default function SignIn() {
                 else {
                     if (response.message) {
                         console.log(response.message);
-                        <Alert severity='error'>{response.message}</Alert>
+                        setError({ isError: true, message: response.message })
+
                     } else { console.log(response); }
                 }
             })
@@ -87,62 +101,71 @@ export default function SignIn() {
     });
 
     return (
-        <Container component="main" maxWidth="xs" className={classes.SignInRoot}>
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <CgProfile />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Log in
-        </Typography>
-                <form className={classes.form} onSubmit={formik.handleSubmit}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="username"
-                        label="Username"
-                        name="username"
-                        value={formik.values.username}
-                        onChange={formik.handleChange}
-                        error={formik.touched.username && Boolean(formik.errors.username)}
-                        helperText={formik.touched.username && formik.errors.username}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        error={formik.touched.password && Boolean(formik.errors.password)}
-                        helperText={formik.touched.password && formik.errors.password}
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Log In
-          </Button>
-                    <Grid container>
-                        <Grid item>
-                            <Link href="/signup" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
-                    </Grid>
-                </form>
+        <div className={classes.root}>
+            <div className={classes.errorDisplay}>
+                {error.isError ? (
+                    <Alert
+                        severity='error'
+                        variant='outlined'>
+                        {error.message}</Alert>
+                ) : null}
             </div>
-        </Container>
-
+            <Container component="main" maxWidth="xs" className={classes.SignInRoot}>
+                <CssBaseline />
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <CgProfile />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Log in
+        </Typography>
+                    <form className={classes.form} onSubmit={formik.handleSubmit}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="username"
+                            label="Username"
+                            name="username"
+                            value={formik.values.username}
+                            onChange={formik.handleChange}
+                            error={formik.touched.username && Boolean(formik.errors.username)}
+                            helperText={formik.touched.username && formik.errors.username}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            helperText={formik.touched.password && formik.errors.password}
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            Log In
+          </Button>
+                        <Grid container>
+                            <Grid item>
+                                <Link href="/signup" variant="body2">
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </form>
+                </div>
+            </Container>
+        </div>
     );
 }

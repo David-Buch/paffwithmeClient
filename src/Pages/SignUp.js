@@ -15,13 +15,24 @@ import { signupUser } from '../Helpers/Api';
 
 
 const useStyles = makeStyles((theme) => ({
-
+    root: {
+        height: '100vh',
+        width: '100vW',
+    },
+    errorDisplay: {
+        display: 'flex',
+        paddingTop: 10,
+        justifyContent: 'center'
+    },
+    SignUpRoot: {
+        display: 'flex',
+        justifyContent: 'center',
+    },
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        position: 'fixed'
     },
     avatar: {
         margin: theme.spacing(1),
@@ -59,7 +70,11 @@ const validationSchema = Yup.object({
 
 export default function SignUp() {
     const classes = useStyles();
-    const { userStore, setUserStore } = useContext(UserContext);
+    const { setUserStore } = useContext(UserContext);
+    const [error, setError] = useState({
+        isError: false,
+        message: ''
+    });
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -82,7 +97,7 @@ export default function SignUp() {
                 else {
                     if (response.message) {
                         console.log(response.message);
-                        <Alert severity='error'>{response.message}</Alert>
+                        setError({ isError: true, message: response.message })
                     } else { console.log(response); }
                 }
             })
@@ -90,73 +105,83 @@ export default function SignUp() {
     });
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <CgProfile />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign Up
-        </Typography>
-                <form className={classes.form} onSubmit={formik.handleSubmit}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="username"
-                        label="Username"
-                        name="username"
-                        value={formik.values.username}
-                        onChange={formik.handleChange}
-                        error={formik.touched.username && Boolean(formik.errors.username)}
-                        helperText={formik.touched.username && formik.errors.username}
-
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        error={formik.touched.password && Boolean(formik.errors.password)}
-                        helperText={formik.touched.password && formik.errors.password}
-
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password2"
-                        label="Confirm Password"
-                        type="password"
-                        id="password2"
-                        value={formik.values.password2}
-                        onChange={formik.handleChange}
-                        error={formik.touched.password2 && Boolean(formik.errors.password2)}
-                        helperText={formik.touched.password2 && formik.errors.password2}
-
-
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
+        <div className={classes.root}>
+            <div className={classes.errorDisplay}>
+                {error.isError ? (
+                    <Alert
+                        severity='error'
+                        variant='outlined'>
+                        {error.message}</Alert>
+                ) : null}
+            </div>
+            <Container component="main" maxWidth="xs" className={classes.SignUpRoot}>
+                <CssBaseline />
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <CgProfile />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
                         Sign Up
+        </Typography>
+                    <form className={classes.form} onSubmit={formik.handleSubmit}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="username"
+                            label="Username"
+                            name="username"
+                            value={formik.values.username}
+                            onChange={formik.handleChange}
+                            error={formik.touched.username && Boolean(formik.errors.username)}
+                            helperText={formik.touched.username && formik.errors.username}
+
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            helperText={formik.touched.password && formik.errors.password}
+
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password2"
+                            label="Confirm Password"
+                            type="password"
+                            id="password2"
+                            value={formik.values.password2}
+                            onChange={formik.handleChange}
+                            error={formik.touched.password2 && Boolean(formik.errors.password2)}
+                            helperText={formik.touched.password2 && formik.errors.password2}
+
+
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            Sign Up
           </Button>
 
-                </form>
-            </div>
-        </Container>
+                    </form>
+                </div>
+            </Container>
+        </div>
     );
 }
