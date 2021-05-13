@@ -10,16 +10,17 @@ import { CgProfile } from 'react-icons/cg';
 import { UserContext } from '../Data/UserContext';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import axios from 'axios';
 import { signupUser } from '../Helpers/Api';
 
 
 const useStyles = makeStyles((theme) => ({
+
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        position: 'fixed'
     },
     avatar: {
         margin: theme.spacing(1),

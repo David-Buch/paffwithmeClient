@@ -65,16 +65,21 @@ export default function SignIn() {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             console.log(values); //
-            let response = loginUser(values.username, values.password);
-            if (response.message) { alert(response.message); }
-            else {
-                setUserStore({
-                    username: response.username,
-                    isLoggedIn: true,
-                    //isLoading: true
-                });
-            }
-        }
+            loginUser(values.username, values.password).then(response => {
+                if (response.success) {
+                    console.log('hi');
+                    setUserStore({
+                        username: response.username,
+                        isLoggedIn: true,
+                        isLoading: false
+                    });
+
+                } if (response.message) {
+                    console.log(response.data.message);
+                    alert(response.message);
+                }
+            })
+        },
     });
 
     return (
