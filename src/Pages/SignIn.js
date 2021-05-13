@@ -64,10 +64,8 @@ export default function SignIn() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            setUserStore({ ...userStore, isLoading: true });
             console.log(values); //
             let response = loginUser(values.username, values.password);
-            console.log(response); //
             if (response.message) { alert(response.message); }
             else {
                 setUserStore({
