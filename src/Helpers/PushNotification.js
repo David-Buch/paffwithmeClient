@@ -46,9 +46,9 @@ function subscribeUser(username) {
 
             }).then(function (sub) {
                 var conSub = JSON.parse(JSON.stringify(sub));
-                console.log('1 ' + conSub);
-                console.log('2 ' + sub);
-                console.log('3 ' + sub.toJSON);
+                console.log(conSub);
+                console.log(sub);
+                console.log(sub.toJSON);
                 sendSubscriptionToBackEnd(sub.endpoint, '', username);
             }).catch(function (e) {
 

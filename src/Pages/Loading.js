@@ -1,7 +1,7 @@
 import { CircularProgress } from '@material-ui/core';
 import React, { useContext, useEffect } from 'react'
 import { UserContext } from '../Data/UserContext';
-import { getSubscription } from '../PushNotification/PushNotification';
+import { getSubscription } from '../Helpers/PushNotification';
 
 export default function Loading() {
 
