@@ -47,9 +47,7 @@ function subscribeUser(username) {
             }).then(function (sub) {
                 var conSub = JSON.parse(JSON.stringify(sub));
                 console.log(conSub);
-                console.log(sub);
-                console.log(sub.toJSON);
-                sendSubscriptionToBackEnd(sub.endpoint, '', username);
+                sendSubscriptionToBackEnd(conSub.endpoint, conSub.keys.auth, username);
             }).catch(function (e) {
 
                 if (Notification.permission === 'denied') {
