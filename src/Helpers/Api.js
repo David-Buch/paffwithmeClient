@@ -20,7 +20,7 @@ async function sendPushtoAll(pushUsername, pushStartTime, pushEndTime, pushLocat
 }
 export function loginUser(username, password) {
 
-    return axios.post(('https://paffwithme.herokuapp.com/login'),
+    return axios.post(('https://paffwithme.herokuapp.com/user/login'),
         {
             username: username,
             password: password
@@ -33,7 +33,7 @@ export function loginUser(username, password) {
 
 export function signupUser(username, password) {
 
-    return axios.post(('https://paffwithme.herokuapp.com/register'),
+    return axios.post(('https://paffwithme.herokuapp.com/user/register'),
         {
             username: username,
             password: password

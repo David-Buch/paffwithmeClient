@@ -45,6 +45,10 @@ function subscribeUser(username) {
                 applicationServerKey: urlBase64ToUint8Array(publicKey)
 
             }).then(function (sub) {
+                var conSub = JSON.parse(JSON.stringify(sub));
+                console.log('1 ' + conSub);
+                console.log('2 ' + sub);
+                console.log('3 ' + sub.toJSON);
                 sendSubscriptionToBackEnd(sub.endpoint, '', username);
             }).catch(function (e) {
 

@@ -91,7 +91,7 @@ export default function SignUp() {
                     setUserStore({
                         username: response.username,
                         isLoggedIn: true,
-                        isLoading: false
+                        isLoading: true
                     });
                 }
                 else {

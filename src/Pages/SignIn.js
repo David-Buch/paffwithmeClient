@@ -86,7 +86,7 @@ export default function SignIn() {
                     setUserStore({
                         username: values.username,
                         isLoggedIn: true,
-                        isLoading: false
+                        isLoading: true
                     });
                 }
                 else {
