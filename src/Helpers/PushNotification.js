@@ -50,7 +50,7 @@ function subscribeUser(username) {
                 sendSubscriptionToBackEnd(conSub.endpoint, conSub.keys.auth, username).then((res) => {
                     console.log(res);
                     if (res.data.message) {
-                        console.log(response.data.message);
+                        console.log(res.data.message);
                     }
                     else {
                         console.log('sending Sub worked');
