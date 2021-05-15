@@ -9,7 +9,7 @@ export default function Loading() {
 
     useEffect(() => {
         console.log('hi im running');
-        getSubscription().then((res) => {
+        getSubscription(userStore.username).then((res) => {
             console.log(res);
             setUserStore({ ...userStore, isLoading: false })
         })
