@@ -16,7 +16,7 @@ function urlBase64ToUint8Array(base64String) {
     return outputArray;
 }
 //chrome://inspect/#devices
-function getSubscription(username) {
+export function getSubscription(username) {
     Notification.requestPermission(function (status) {
         console.log('Notification permission status:', status);
     });
@@ -46,8 +46,17 @@ function subscribeUser(username) {
 
             }).then(function (sub) {
                 var conSub = JSON.parse(JSON.stringify(sub));
-                console.log(conSub);
-                sendSubscriptionToBackEnd(conSub.endpoint, conSub.keys.auth, username);
+                console.log(conSub.keys.auth);
+                sendSubscriptionToBackEnd(conSub.endpoint, conSub.keys.auth, username).then((res) => {
+                    console.log(res);
+                    if (res.data.message) {
+                        console.log(response.data.message);
+                    }
+                    else {
+                        console.log('sending Sub worked');
+                    }
+
+                })
             }).catch(function (e) {
 
                 if (Notification.permission === 'denied') {
@@ -60,25 +69,28 @@ function subscribeUser(username) {
     }
 }
 
-async function sendSubscriptionToBackEnd(endPoint, auth, username) {
-    try {
-        const response = await axios.post('https://paffwithme.herokuapp.com/notification/subscribe', {
-            username: username,
-            endpoint: endPoint,
-            authKey: auth
-        });
+function sendSubscriptionToBackEnd(endPoint, auth, username) {
+
+    return axios.post('https://paffwithme.herokuapp.com/notification/subscribe', {
+        username: username,
+        endpoint: endPoint,
+        authKey: auth
+    }).then((response) => {
         console.log(response);
         if (!response.data.success) {
-            throw new Error('Bad status code from server.');
+            if (response.data.message) {
+                console.log(response.data.message);
+                return response;
+            }
+            else {
+                throw new Error('Bad status code from server.');
+            }
         } else {
-            return response.json();
+            return response;
         }
-
-    } catch (error) {
+    }).catch((error) => {
         throw new Error('Bad response from server.' + error);
-    }
-};
-
-export { getSubscription };
+    })
+}
 
 
