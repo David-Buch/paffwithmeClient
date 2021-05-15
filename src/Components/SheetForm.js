@@ -81,9 +81,9 @@ export default function SheetForm() {
             setBsOpen(false);
             sendPushtoAll(
                 userStore.username,
-                values.location,
                 values.pushStartTime,
-                values.endTime
+                values.endTime,
+                values.location
             ).then((res) => { console.log(res); });
         },
     });

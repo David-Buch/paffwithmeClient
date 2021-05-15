@@ -33,7 +33,6 @@ export default function Home() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [btnDisabled, setBtnDisabeld] = useState(false);
 
-
     return (
         <div className={classes.root}>
             <Grid
