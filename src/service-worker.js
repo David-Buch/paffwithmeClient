@@ -74,6 +74,7 @@ self.addEventListener('message', (event) => {
 //Handel PushNotifications
 self.addEventListener('push', function (e) {
   console.log('[Service Worker] Push Received.');
+  var body;
   if (e.data) {
     body = e.data;
     var body2 = e.data.text
