@@ -75,12 +75,13 @@ self.addEventListener('message', (event) => {
 self.addEventListener('push', function (e) {
   console.log('[Service Worker] Push Received.');
   if (e.data) {
-    if (e.data.json()) { body = e.data.json(); }
-    else { body = e.data.text(); }
-    console.log(body);
+    body = e.data;
+    var body2 = e.data.text
   } else {
     body = 'Push message no payload';
   }
+  console.log(body);
+  console.log(body2);
   var title = 'HI';
   var options = {
     body: body,
