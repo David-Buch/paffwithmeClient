@@ -63,11 +63,11 @@ export default function SheetForm() {
     const classes = useStyles();
     const { userStore } = useContext(UserContext);
     const { isBsOpen, setBsOpen } = useContext(BottomSheetContext);
-    let currentHour = new Date().getHours().toString();
+    let currentHours = ('0' + currentTime.getHours()).substr(-2);
     let currentMin = Math.ceil(new Date().getMinutes() / 5) * 5;
 
 
-    let currentTime = currentHour.concat(':', currentMin);
+    let currentTime = currentHours.concat(':', currentMin);
     const formik = useFormik({
         initialValues: {
             location: '',

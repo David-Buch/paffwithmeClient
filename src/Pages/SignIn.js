@@ -78,11 +78,8 @@ export default function SignIn() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values); //
             loginUser(values.username, values.password).then(response => {
-                console.log(response);
                 if (response.success) {
-                    console.log('hi');
                     setUserStore({
                         username: values.username,
                         isLoggedIn: true,
@@ -94,7 +91,11 @@ export default function SignIn() {
                         console.log(response.message);
                         setError({ isError: true, message: response.message })
 
-                    } else { console.log(response); }
+                    } else {
+                        if (response.error) {
+                            setError({ isError: true, message: 'Server Error' });
+                        }
+                    }
                 }
             })
         },

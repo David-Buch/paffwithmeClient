@@ -83,7 +83,6 @@ export default function SignUp() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values); //
             signupUser(values.username, values.password).then(response => {
                 console.log(response);
                 if (response.success) {
@@ -98,7 +97,11 @@ export default function SignUp() {
                     if (response.message) {
                         console.log(response.message);
                         setError({ isError: true, message: response.message })
-                    } else { console.log(response); }
+                    } else {
+                        if (response.error) {
+                            setError({ isError: true, message: 'Server Error' });
+                        }
+                    }
                 }
             })
         },
