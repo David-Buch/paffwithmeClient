@@ -73,11 +73,10 @@ self.addEventListener('message', (event) => {
 
 //Handel PushNotifications
 self.addEventListener('push', function (e) {
-  //does not work 
   console.log('[Service Worker] Push Received.');
-  var body;
   if (e.data) {
-    body = e.data.text();
+    if (e.data.json()) { body = e.data.json(); }
+    else { body = e.data.text(); }
     console.log(body);
   } else {
     body = 'Push message no payload';
