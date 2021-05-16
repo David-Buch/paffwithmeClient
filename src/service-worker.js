@@ -102,5 +102,5 @@ self.addEventListener('push', function (e) {
       },
     ]
   };
-  e.waitUntil(self.ServiceWorkerRegistration.showNotification(title, options));
+  e.waitUntil(self.registration.showNotification(title, options));
 });
