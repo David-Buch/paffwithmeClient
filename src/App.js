@@ -16,7 +16,6 @@ export default function App() {
         isLoggedIn: false,
         isLoading: false,
     });
-
     return (
         <UserContext.Provider value={{ userStore, setUserStore }}>
             {userStore.isLoading ?

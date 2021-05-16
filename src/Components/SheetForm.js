@@ -63,7 +63,7 @@ export default function SheetForm() {
     const classes = useStyles();
     const { userStore } = useContext(UserContext);
     const { isBsOpen, setBsOpen } = useContext(BottomSheetContext);
-    let currentHours = ('0' + currentTime.getHours()).substr(-2);
+    let currentHours = ('0' + new Date().getHours()).substr(-2);
     let currentMin = Math.ceil(new Date().getMinutes() / 5) * 5;
 
 
