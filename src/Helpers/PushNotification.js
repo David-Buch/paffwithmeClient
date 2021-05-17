@@ -71,6 +71,10 @@ function subscribeUser(username) {
 }
 
 function sendSubscriptionToBackEnd(subStr, username) {
+    console.log(JSON.stringify({
+        username: username,
+        subscription: subStr
+    }));
     return axios.post('https://paffwithme.herokuapp.com/notification/subscribe', {
         username: username,
         subscription: subStr
