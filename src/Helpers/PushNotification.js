@@ -46,9 +46,7 @@ function subscribeUser(username) {
                 applicationServerKey: convertedKey
 
             }).then(function (sub) {
-                var subToo = JSON.stringify(sub);
-                console.log(subToo);
-                sendSubscriptionToBackEnd(subToo, username).then((res) => {
+                sendSubscriptionToBackEnd(sub, username).then((res) => {
                     console.log(res);
                     if (res.data.message) {
                         console.log(res.data.message);
@@ -70,14 +68,14 @@ function subscribeUser(username) {
     }
 }
 
-function sendSubscriptionToBackEnd(subStr, username) {
+function sendSubscriptionToBackEnd(sub, username) {
     console.log(JSON.stringify({
         username: username,
-        subscription: subStr
+        subscription: sub
     }));
     return axios.post('https://paffwithme.herokuapp.com/notification/subscribe', {
         username: username,
-        subscription: subStr
+        subscription: sub
     }).then((response) => {
         console.log(response);
         if (!response.data.success) {
