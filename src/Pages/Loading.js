@@ -8,18 +8,14 @@ export default function Loading() {
     const { userStore, setUserStore } = useContext(UserContext);
 
     useEffect(() => {
-        console.log('hi im running');
-        getSubscription(userStore.username).then((res) => {
-            console.log(res);
+        getSubscription(userStore.username).then(() => {
             setUserStore({ ...userStore, isLoading: false })
         })
     }, []);
 
     return (
-
         <div style={{ height: '100vH', width: '100vW', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <CircularProgress size={60} />
         </div>
-
     );
 }
