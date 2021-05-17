@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const publicKey = 'BEfTrbmLEi8GZXmNyPBr7lUhaxCc6-OGO8ygoCk2l4ljF81cVD9kkNSzmsMqE4k-r9el-adxNQwB1glNryD4AcE';
+const publicKey = process.env.PUBLIC_VAPID_KEY;
 function urlBase64ToUint8Array(base64String) {
     const padding = "=".repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
@@ -15,6 +15,7 @@ function urlBase64ToUint8Array(base64String) {
     }
     return outputArray;
 }
+const convertedKey = urlBase64ToUint8Array(publicKey);
 //chrome://inspect/#devices
 export function getSubscription(username) {
     Notification.requestPermission(function (status) {
@@ -42,12 +43,13 @@ function subscribeUser(username) {
         navigator.serviceWorker.ready.then(function (reg) {
             reg.pushManager.subscribe({
                 userVisibleOnly: true,
-                applicationServerKey: urlBase64ToUint8Array(publicKey)
+                applicationServerKey: convertedKey
 
             }).then(function (sub) {
-                var conSub = JSON.parse(JSON.stringify(sub));
-                console.log(conSub.keys.auth);
-                sendSubscriptionToBackEnd(conSub.endpoint, conSub.keys.auth, username).then((res) => {
+                var subToo = JSON.stringify(sub);
+                //var conSub = JSON.parse(JSON.stringify(sub));
+                //console.log(conSub.keys.auth);
+                sendSubscriptionToBackEnd(subToo, username).then((res) => {
                     console.log(res);
                     if (res.data.message) {
                         console.log(res.data.message);
@@ -69,12 +71,13 @@ function subscribeUser(username) {
     }
 }
 
-function sendSubscriptionToBackEnd(endPoint, auth, username) {
+function sendSubscriptionToBackEnd(sub, username) {
 
     return axios.post('https://paffwithme.herokuapp.com/notification/subscribe', {
         username: username,
-        endpoint: endPoint,
-        authKey: auth
+        subcription: sub
+        //endpoint: endPoint,
+        //authKey: auth
     }).then((response) => {
         console.log(response);
         if (!response.data.success) {

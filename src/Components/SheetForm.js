@@ -84,7 +84,7 @@ export default function SheetForm() {
                 values.pushStartTime,
                 values.endTime,
                 values.location
-            ).then((res) => { console.log(res); });
+            ).then((res) => { console.log(res.data); });
         },
     });
 

@@ -8,7 +8,6 @@ export function sendPushtoAll(pushUsername, pushStartTime, pushEndTime, pushLoca
         //startTime: pushStartTime,
         //endTime: pushEndTime
     }).then((response) => {
-        console.log(response);
         if (response.data.success) {
             console.log('Push worked');
             return response;
