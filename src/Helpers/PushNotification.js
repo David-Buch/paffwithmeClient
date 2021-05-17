@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const publicKey = process.env.PUBLIC_VAPID_KEY;
+const publicKey = process.env.REACT_APP_PUBLIC_VAPID_KEY;
 function urlBase64ToUint8Array(base64String) {
     const padding = "=".repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
