@@ -72,10 +72,9 @@ function subscribeUser(username) {
 }
 
 function sendSubscriptionToBackEnd(sub, username) {
-
     return axios.post('https://paffwithme.herokuapp.com/notification/subscribe', {
         username: username,
-        subcription: sub
+        subscription: sub
         //endpoint: endPoint,
         //authKey: auth
     }).then((response) => {
