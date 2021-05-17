@@ -47,8 +47,7 @@ function subscribeUser(username) {
 
             }).then(function (sub) {
                 var subToo = JSON.stringify(sub);
-                //var conSub = JSON.parse(JSON.stringify(sub));
-                //console.log(conSub.keys.auth);
+                console.log(subToo);
                 sendSubscriptionToBackEnd(subToo, username).then((res) => {
                     console.log(res);
                     if (res.data.message) {
