@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 export function sendPushtoAll(pushUsername, pushStartTime, pushEndTime, pushLocation) {
-
+    console.log(JSON.stringify({
+        username: pushUsername,
+        location: pushLocation,
+    }));
     return axios.post('https://paffwithme.herokuapp.com/notification/sendtoAll', {
         username: pushUsername,
         location: pushLocation,
@@ -16,7 +19,7 @@ export function sendPushtoAll(pushUsername, pushStartTime, pushEndTime, pushLoca
     }).
         catch((error) => {
             console.log(error);
-            //throw new Error('Bad response from server. Error:' + error);
+            throw new Error('Bad response from server. Error:' + error);
         });
 }
 export function loginUser(username, password) {

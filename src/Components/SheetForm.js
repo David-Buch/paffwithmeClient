@@ -77,7 +77,6 @@ export default function SheetForm() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(isBsOpen);
             setBsOpen(false);
             sendPushtoAll(
                 userStore.username,
