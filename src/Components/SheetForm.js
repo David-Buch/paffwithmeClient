@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 //import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -10,10 +10,10 @@ import { BiSend } from 'react-icons/bi';
 
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { sendPushtoAll } from '../Helpers/Api';
+import { sendPushtoAll, sendSmokeData } from '../Helpers/Api';
 import { UserContext } from '../Data/UserContext';
 import { BottomSheetContext } from '../Data/BottomSheetContext';
-
+import { AlertContext } from '../Data/AlertContext';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -62,7 +62,8 @@ export default function SheetForm() {
 
     const classes = useStyles();
     const { userStore } = useContext(UserContext);
-    const { isBsOpen, setBsOpen } = useContext(BottomSheetContext);
+    const { setAlert } = useContext(AlertContext);
+    const { setBsOpen } = useContext(BottomSheetContext);
     let currentHours = ('0' + new Date().getHours()).substr(-2);
     let currentMin = Math.ceil(new Date().getMinutes() / 5) * 5;
 
@@ -79,11 +80,16 @@ export default function SheetForm() {
         onSubmit: (values) => {
             setBsOpen(false);
             sendPushtoAll(
-                userStore.username,
-                values.pushStartTime,
-                values.endTime,
-                values.location
+                userStore.username
             ).then((res) => { console.log(res.data); });
+            sendSmokeData(userStore.username, values.location, values.startTime, values.endTime)
+                .then((res) => {
+                    if (res.success) { setAlert({ isAlert: true, status: 'success', message: 'send SmokeData worked' }) }
+                    else {
+                        if (res.message) { setAlert({ isAlert: true, status: 'waring', message: res.message }) }
+                        else { setAlert({ isAlert: true, status: 'error', message: res.error }) }
+                    }
+                })
         },
     });
 

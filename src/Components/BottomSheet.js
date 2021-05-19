@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Sheet from 'react-modal-sheet';
 import { makeStyles } from '@material-ui/core/styles';

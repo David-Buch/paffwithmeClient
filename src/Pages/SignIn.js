@@ -9,12 +9,14 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Alert from '@material-ui/lab/Alert'
+import Alert from '@material-ui/lab/Alert';
+//import LoadingButton from '@material-ui/lab/LoadingButton';
 import { UserContext } from '../Data/UserContext';
 import { CgProfile } from 'react-icons/cg';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { loginUser } from '../Helpers/Api';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -66,6 +68,7 @@ const validationSchema = Yup.object({
 export default function SignIn() {
     const classes = useStyles();
     const { setUserStore } = useContext(UserContext);
+    const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState({
         isError: false,
         message: ''
@@ -78,26 +81,32 @@ export default function SignIn() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
+            setLoading(true);
             loginUser(values.username, values.password).then(response => {
+                setLoading(false);
                 if (response.success) {
+                    //login worked
                     setUserStore({
-                        username: values.username,
+                        username: response.username,
                         isLoggedIn: true,
                         isLoading: true
                     });
                 }
                 else {
+                    //login didnt work 
                     if (response.message) {
                         console.log(response.message);
                         setError({ isError: true, message: response.message })
 
                     } else {
+                        //login Server Error
                         if (response.error) {
                             setError({ isError: true, message: 'Server Error' });
                         }
                     }
                 }
             })
+
         },
     });
 
@@ -154,9 +163,12 @@ export default function SignIn() {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            disabled={isLoading}
                         >
-                            Log In
-          </Button>
+                            {!isLoading ?
+                                (<>Log In</>) : (<CircularProgress />)
+                            }
+                        </Button>
                         <Grid container>
                             <Grid item>
                                 <Link href="/signup" variant="body2">

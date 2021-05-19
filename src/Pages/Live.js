@@ -1,27 +1,9 @@
 import { makeStyles } from '@material-ui/core';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ListView from '../Components/ListView';
 import Stories from '../Components/Stories';
-
-const data = [
-    {
-        username: 'david',
-        startTime: '14:00',
-        endTime: '15:00',
-        location: 'Daham',
-        date: '27.04.2021',
-        smoking: true,
-    },
-    {
-        username: 'basti',
-        startTime: '16:00',
-        endTime: '17:00',
-        location: 'Graz Wohnung',
-        date: '25.05.2021',
-        smoking: false,
-    },
-];
-
+import { AlertContext } from '../Data/AlertContext';
+import { getSmokeData } from '../Helpers/Api';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,10 +28,25 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
-
 export default function Live() {
     const classes = useStyles();
+    const [data, setData] = useState([]);
+    const { setAlert } = useContext(AlertContext);
+
+    useEffect(() => {
+        console.log('hi');
+        getSmokeData().then((res) => {
+            if (res.success) {
+                console.log(res);
+                setData(JSON.parse(res.smokeData));
+                setAlert({ isAlert: true, status: 'success', message: 'got all the data' })
+            }
+            else {
+                if (res.message) { setAlert({ isAlert: true, status: 'warning', message: res.message }) }
+                else { setAlert({ isAlert: true, status: 'error', message: res.error }) }
+            }
+        })
+    }, []);
     return (
         <div className={classes.root}>
             <div className={classes.storys}>

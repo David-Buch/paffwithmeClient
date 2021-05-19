@@ -8,6 +8,7 @@ import SendModal from '../Components/SendModal';
 import { BottomSheetContext } from '../Data/BottomSheetContext';
 
 
+
 const useStyles = makeStyles((theme) => ({
     root: {
         paddingTop: 20,
@@ -27,9 +28,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
     const classes = useStyles();
-    const [isBsOpen, setBsOpen] = useState(false);
 
-    // in SheetForm i guess
+    const [isBsOpen, setBsOpen] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
     const [btnDisabled, setBtnDisabeld] = useState(false);
 

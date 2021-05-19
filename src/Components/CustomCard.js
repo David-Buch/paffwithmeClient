@@ -39,7 +39,7 @@ export default function OutlinedCard(props) {
                 }
                 action={
                     <div className={classes.action}>{
-                        props.smoking ? (
+                        props.currentlySmoking === 1 ? (
                             <Button
                                 variant="contained"
                                 className={classes.button}

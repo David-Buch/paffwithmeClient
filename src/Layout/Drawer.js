@@ -15,16 +15,16 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import { BsGearFill, BsPlus, BsList } from 'react-icons/bs';
 import { GoSignOut } from "react-icons/go";
-import { Route, Switch, Link, BrowserRouter as Router, Redirect } from 'react-router-dom';
+import { Route, Switch, Link, BrowserRouter as Router, useHistory } from 'react-router-dom';
 
 import BottomTab from './BottomTab';
 import Settings from '../Pages/Settings';
 import Customize from '../Pages/Customize';
-import { Avatar, Box, Grid, SwipeableDrawer } from '@material-ui/core';
+import { Avatar, SwipeableDrawer } from '@material-ui/core';
 import { deepOrange } from '@material-ui/core/colors'
 import { UserContext } from '../Data/UserContext';
-
-//https://developer.mozilla.org/de/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container
+import { AlertContext } from '../Data/AlertContext';
+import Alert from '@material-ui/lab/Alert';
 
 const drawerWidth = 240;
 
@@ -61,8 +61,13 @@ const useStyles = makeStyles((theme) => ({
         width: drawerWidth,
     },
     content: {
-        position: "fixed",
+
         flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    alert: {
+        paddingTop: 50,
     },
     drawerBottom: {
 
@@ -103,8 +108,10 @@ function ResponsiveDrawer(props) {
     const { window } = props;
     const classes = useStyles();
     const theme = useTheme();
+    let history = useHistory();
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const { userStore, setUserStore } = useContext(UserContext);
+    const { alert, setAlert } = useContext(AlertContext);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -114,9 +121,10 @@ function ResponsiveDrawer(props) {
         console.log('loggedOut');
         setUserStore({
             username: '',
-            isLoogedIn: false,
+            isLoggedIn: false,
         });
-        <Redirect to='/' />
+        history.push('/');
+
     };
 
     const firstLetter = userStore.username.charAt(0).toUpperCase();
@@ -133,63 +141,6 @@ function ResponsiveDrawer(props) {
                 <Typography variant="h4" className={classes.username}>
                     {userStore.username}
                 </Typography>
-
-                {/*
-                <div className={classes.profileInfo}>
-                    <Grid
-                        container
-                        direction="column"
-                        justify="space-around"
-                        alignItems="center"
-                        spacing={1}
-                    >
-                        <Grid item xs={12}
-                            container
-                            direction='row'
-                            justify="center"
-                            alignItems="center"
-                        >
-                            <Grid item xs={6}>
-                                <Box border={1}>
-                                    <Typography>
-                                        Smoked Pipes
-                        </Typography>
-                                </Box>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Box border={1}>
-                                    <Typography>
-                                        Friends online
-                        </Typography>
-                                </Box>
-
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12}
-                            container
-                            direction='row'
-                            justify="center"
-                            alignItems="center"
-                        >
-                            <Grid item xs={6}>
-                                <Box border={1}>
-                                    <Typography>
-                                        {50}
-                                    </Typography>
-                                </Box>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Box border={1}>
-                                    <Typography>
-                                        {2}
-                                    </Typography>
-                                </Box>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                
-                </div>
-                */}
             </div>
             <Divider />
             <List>
@@ -251,6 +202,7 @@ function ResponsiveDrawer(props) {
                             variant="temporary"
                             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
                             open={mobileOpen}
+                            onOpen={() => console.log('hi')}
                             onClose={handleDrawerToggle}
                             classes={{
                                 paper: classes.drawerPaper,
@@ -275,7 +227,14 @@ function ResponsiveDrawer(props) {
                     </Hidden>
                 </nav>
                 <main className={classes.content}>
-                    <div className={classes.toolbar} />
+                    <div className={classes.alert}>
+                        {alert.isAlert ? (
+                            <div>
+                                <Alert severity={alert.status} color={alert.status} onClose={() => { setAlert({ ...alert, isAlert: false }) }}>{alert.message}</Alert>
+                            </div>) :// <div className={classes.toolbar} />
+                            null}
+                    </div>
+
                     <Switch>
                         <Route path='/' component={BottomTab} />
                         <Route path='/settings' component={Settings} />

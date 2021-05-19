@@ -1,23 +1,16 @@
 import axios from 'axios';
 
-export function sendPushtoAll(pushUsername, pushStartTime, pushEndTime, pushLocation) {
-    console.log(JSON.stringify({
-        username: pushUsername,
-        location: pushLocation,
-    }));
+export function sendPushtoAll(pushUsername) {
     return axios.post('https://paffwithme.herokuapp.com/notification/sendtoAll', {
         username: pushUsername,
-        location: pushLocation,
-        //startTime: pushStartTime,
-        //endTime: pushEndTime
     }).then((response) => {
         if (response.data.success) {
             console.log('Push worked');
             return response;
         }
         else { console.log('Push NOT worked'); }
-    }).
-        catch((error) => {
+    })
+        .catch((error) => {
             console.log(error);
             throw new Error('Bad response from server. Error:' + error);
         });
@@ -44,5 +37,35 @@ export function signupUser(username, password) {
         .catch(error => {
             console.log(error);
             throw new Error(error);
+        });
+}
+
+export function getSmokeData() {
+    return axios.post('https://paffwithme.herokuapp.com/smokingData/get', {})
+        .then(res => res.data)
+        .catch((err) => {
+            console.log(err);
+            throw new Error(err);
+        });
+}
+
+export function sendSmokeData(username, location, startTime, endTime) {
+
+    console.log(JSON.stringify({
+        username: username,
+        location: location,
+        startTime: startTime,
+        endTime: endTime
+    }));
+
+    return axios.post('https://paffwithme.herokuapp.com/smokingData/send', {
+        username: username,
+        location: location,
+        startTime: startTime,
+        endTime: endTime
+    }).then(res => res.data)
+        .catch(error => {
+            console.log(error);
+            return error;
         });
 }

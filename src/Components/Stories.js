@@ -1,8 +1,9 @@
-import { Avatar, makeStyles, Typography } from '@material-ui/core';
-import { List } from 'antd';
+import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import List from 'antd/lib/list';
 import React from 'react';
 
-import { CgProfile } from 'react-icons/cg';
 
 const useStyles = makeStyles({
     storyRoot: {
@@ -22,10 +23,13 @@ export default function Stories(props) {
                 dataSource={props.data}
                 renderItem={item => (
                     <div>
-                        {item.smoking ? (
+                        {item.currentlySmoking ? (
                             <div>
-                                <Avatar>
-                                    <CgProfile size={40} />
+                                <Avatar alt="profileAvatar"
+                                    component='div'>
+                                    <Typography variant="h2">
+                                        {item.username.charAt(0).toUpperCase()}
+                                    </Typography>
                                 </Avatar>
                                 {item.username}
                             </div>

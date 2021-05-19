@@ -12,6 +12,7 @@ import { UserContext } from '../Data/UserContext';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { signupUser } from '../Helpers/Api';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +64,7 @@ const validationSchema = Yup.object({
         .string('Enter your password')
         .test('password-match', 'Passwords do not match', function (value) {
             let { password } = this.parent;
-            return password == value;
+            return password === value;
         })
         .required('password time is required'),
 });
@@ -71,6 +72,7 @@ const validationSchema = Yup.object({
 export default function SignUp() {
     const classes = useStyles();
     const { setUserStore } = useContext(UserContext);
+    const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState({
         isError: false,
         message: ''
@@ -83,12 +85,12 @@ export default function SignUp() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
+            setLoading(true);
             signupUser(values.username, values.password).then(response => {
-                console.log(response);
+                setLoading(false);
                 if (response.success) {
-                    console.log('hi');
                     setUserStore({
-                        username: response.username,
+                        username: values.username,
                         isLoggedIn: true,
                         isLoading: true
                     });
@@ -178,9 +180,12 @@ export default function SignUp() {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            disabled={isLoading}
                         >
-                            Sign Up
-          </Button>
+                            {!isLoading ?
+                                (<>Sign Up</>) : (<CircularProgress />)
+                            }
+                        </Button>
 
                     </form>
                 </div>
