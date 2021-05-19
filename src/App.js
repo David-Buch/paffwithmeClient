@@ -15,7 +15,7 @@ export default function App() {
     const [userStore, setUserStore] = useState({
         username: '',
         isLoggedIn: true, //
-        isLoading: false,
+        isLoading: true,
     });
     const [alert, setAlert] = useState({
         isAlert: false,
