@@ -14,8 +14,8 @@ import Loading from './Pages/Loading';
 export default function App() {
     const [userStore, setUserStore] = useState({
         username: '',
-        isLoggedIn: true, //
-        isLoading: true,
+        isLoggedIn: false, //
+        isLoading: false,
     });
     const [alert, setAlert] = useState({
         isAlert: false,
