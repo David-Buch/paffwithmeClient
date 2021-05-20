@@ -10,7 +10,7 @@ export default function Loading() {
     useEffect(() => {
         getSubscription(userStore.username).then((res) => {
             console.log(res);
-            if (res.message) {
+            if (!res.data.success) {
                 setAlert({
                     isAlert: true,
                     status: 'warning',

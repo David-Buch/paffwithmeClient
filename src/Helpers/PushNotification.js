@@ -28,18 +28,20 @@ export function getSubscription(username) {
             registration.pushManager.getSubscription().then(function (sub) {
                 if (sub === null) {
                     console.log('Not subscribed to push service!');
-                    subscribeUser(username);
+                    return subscribeUser(username);
                 } else {
                     // We have a subscription, update the database
                     // Check if subcription object is the same as the one in the db
                     console.log('Have a Subscription object: ');
-                    subscribeUser(username);
+                    return subscribeUser(username);
                 }
             });
         }
         else {
             return { success: false, message: 'Push Notifications are not supported, for the full experience switch to another browser' }
-
+        }
+        if (Notification.permission === 'denied') {
+            return { success: false, message: 'Please allow Notifications' }
         }
     });
 
@@ -54,7 +56,7 @@ function subscribeUser(username) {
                 applicationServerKey: convertedKey
 
             }).then(function (sub) {
-                sendSubscriptionToBackEnd(sub, username).then((res) => {
+                return sendSubscriptionToBackEnd(sub, username).then((res) => {
                     console.log(res);
                     if (res.data.message) {
                         console.log(res.data.message);
@@ -62,16 +64,11 @@ function subscribeUser(username) {
                     else {
                         console.log('sending Sub worked');
                     }
-
                 })
             }).catch(function (e) {
-
-                if (Notification.permission === 'denied') {
-                    return { success: false, message: 'Please allow Notifications' }
-                } else {
-                    return { success: false, message: 'Unable to subscribe to push', e }
-                }
-            });
+                return { success: false, message: 'Unable to subscribe to push', e }
+            }
+            );
         })
     }
 }
