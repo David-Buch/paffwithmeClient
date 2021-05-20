@@ -64,8 +64,7 @@ export default function SheetForm() {
     const { setBsOpen } = useContext(BottomSheetContext);
     const { setSmoking } = useContext(SmokingContext);
     let currentHours = ('0' + new Date().getHours()).substr(-2);
-    let currentMin = Math.ceil(new Date().getMinutes() / 5) * 5;
-
+    let currentMin = ('0' + Math.ceil(new Date().getMinutes() / 5) * 5).substr(-2);
 
     let currentTime = currentHours.concat(':', currentMin);
     const formik = useFormik({
@@ -85,9 +84,10 @@ export default function SheetForm() {
             sendSmokeData(userStore.username, values.location, values.startTime, values.endTime)
                 .then((res) => {
                     if (res.success) {
-                        setAlert({ isAlert: true, status: 'success', message: 'send SmokeData worked' })
+                        setAlert({ isAlert: true, status: 'success', message: 'Push was send! Enjoy your pipe!' });
                         setSmoking(true);
-                        setTimeout(setSmoking(false), smokingDuration * 1000);
+                        console.log(smokingDuration);
+                        setTimeout(() => { setSmoking(false) }, smokingDuration * 1000);
                     }
                     else {
                         if (res.message) { setAlert({ isAlert: true, status: 'waring', message: res.message }) }
@@ -114,7 +114,6 @@ export default function SheetForm() {
             <form
                 className={classes.container}
                 onSubmit={formik.handleSubmit}
-            //onSubmit={(event) => props.onSend(event, sendData)}
             >
                 <Grid
                     className={classes.grid}
@@ -137,7 +136,6 @@ export default function SheetForm() {
                                 onChange={formik.handleChange}
                                 error={formik.touched.startTime && Boolean(formik.errors.startTime)}
                                 helperText={formik.touched.startTime && formik.errors.startTime}
-                                //onChange={(e) => setSendData({ ...sendData, startTime: e.target.value })}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -156,7 +154,6 @@ export default function SheetForm() {
                                 onChange={formik.handleChange}
                                 error={formik.touched.endTime && Boolean(formik.errors.endTime)}
                                 helperText={formik.touched.endTime && formik.errors.endTime}
-                                //onChange={(e) => setSendData({ ...sendData, endTime: e.target.value })}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -179,7 +176,6 @@ export default function SheetForm() {
                             onChange={formik.handleChange}
                             error={formik.touched.location && Boolean(formik.errors.location)}
                             helperText={formik.touched.location && formik.errors.location}
-                            //onChange={(e) => setSendData({ ...sendData, location: e.target.value })}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">

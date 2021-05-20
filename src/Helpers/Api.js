@@ -40,8 +40,10 @@ export function signupUser(username, password) {
         });
 }
 
-export function getSmokeData() {
-    return axios.post('https://paffwithme.herokuapp.com/smokingData/get', {})
+export function getSmokeData(username) {
+    return axios.post('https://paffwithme.herokuapp.com/smokingData/get', {
+        username: username
+    })
         .then(res => res.data)
         .catch((err) => {
             console.log(err);

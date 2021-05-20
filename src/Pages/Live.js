@@ -3,7 +3,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import React, { useContext, useEffect, useState } from 'react';
 import ListView from '../Components/ListView';
 import Stories from '../Components/Stories';
-import { AlertContext } from '../Data/Contexts';
+import { AlertContext, UserContext } from '../Data/Contexts';
 import { getSmokeData } from '../Helpers/Api';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,15 +34,15 @@ export default function Live() {
     const [data, setData] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const { setAlert } = useContext(AlertContext);
+    const { userStore } = useContext(UserContext);
 
     useEffect(() => {
         setLoading(true);
-        getSmokeData().then((res) => {
+        getSmokeData(userStore.username).then((res) => {
             setLoading(false);
             if (res.success) {
                 console.log(res);
                 setData(JSON.parse(res.smokeData));
-                setAlert({ isAlert: true, status: 'success', message: 'got all the data' })
             }
             else {
                 if (res.message) { setAlert({ isAlert: true, status: 'warning', message: res.message }) }
