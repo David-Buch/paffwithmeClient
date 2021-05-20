@@ -21,11 +21,14 @@ const convertedKey = urlBase64ToUint8Array(publicKey);
 export function getSubscription(username) {
     Notification.requestPermission(function (status) {
         console.log('Notification permission status:', status);
+        if (Notification.permission === 'denied') {
+            return { success: false, message: 'Please allow Notifications' }
+        }
     });
     return navigator.serviceWorker.ready.then(function (registration) {
         console.log('Registration successful, scope is:', registration.scope);
         if (registration.pushManager) {
-            registration.pushManager.getSubscription().then(function (sub) {
+            return registration.pushManager.getSubscription().then(function (sub) {
                 if (sub === null) {
                     console.log('Not subscribed to push service!');
                     return subscribeUser(username).then((res) => {
@@ -46,9 +49,7 @@ export function getSubscription(username) {
         else {
             return { success: false, message: 'Push Notifications are not supported, for the full experience switch to another browser' }
         }
-        if (Notification.permission === 'denied') {
-            return { success: false, message: 'Please allow Notifications' }
-        }
+
     });
 
 
@@ -57,7 +58,7 @@ export function getSubscription(username) {
 function subscribeUser(username) {
     if ('serviceWorker' in navigator) {
         return navigator.serviceWorker.ready.then(function (reg) {
-            reg.pushManager.subscribe({
+            return reg.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: convertedKey
             }).then(function (sub) {
