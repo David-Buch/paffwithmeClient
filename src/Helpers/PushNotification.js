@@ -61,7 +61,7 @@ function subscribeUser(username) {
                 userVisibleOnly: true,
                 applicationServerKey: convertedKey
             }).then(function (sub) {
-                sendSubscriptionToBackEnd(sub, username).then((res) => {
+                return sendSubscriptionToBackEnd(sub, username).then((res) => {
                     console.log(res);
                     return res;
                 })
