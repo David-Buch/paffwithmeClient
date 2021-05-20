@@ -28,12 +28,12 @@ export function getSubscription(username) {
             registration.pushManager.getSubscription().then(function (sub) {
                 if (sub === null) {
                     console.log('Not subscribed to push service!');
-                    return subscribeUser(username);
+                    subscribeUser(username);
                 } else {
                     // We have a subscription, update the database
                     // Check if subcription object is the same as the one in the db
                     console.log('Have a Subscription object: ');
-                    return subscribeUser(username);
+                    subscribeUser(username);
                 }
             });
         }
@@ -56,14 +56,9 @@ function subscribeUser(username) {
                 applicationServerKey: convertedKey
 
             }).then(function (sub) {
-                return sendSubscriptionToBackEnd(sub, username).then((res) => {
+                sendSubscriptionToBackEnd(sub, username).then((res) => {
                     console.log(res);
-                    if (res.data.message) {
-                        console.log(res.data.message);
-                    }
-                    else {
-                        console.log('sending Sub worked');
-                    }
+                    return res.data;
                 })
             }).catch(function (e) {
                 return { success: false, message: 'Unable to subscribe to push', e }
@@ -79,17 +74,7 @@ function sendSubscriptionToBackEnd(sub, username) {
         subscription: sub
     }).then((response) => {
         console.log(response);
-        if (!response.data.success) {
-            if (response.data.message) {
-                console.log(response.data.message);
-                return response;
-            }
-            else {
-                throw new Error('Bad status code from server.');
-            }
-        } else {
-            return response;
-        }
+        return response.data;
     }).catch((error) => {
         throw new Error('Bad response from server.' + error);
     })
