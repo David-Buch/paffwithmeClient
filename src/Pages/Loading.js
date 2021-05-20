@@ -1,14 +1,21 @@
 import { CircularProgress } from '@material-ui/core';
 import React, { useContext, useEffect } from 'react'
-import { UserContext } from '../Data/Contexts';
+import { UserContext, AlertContext } from '../Data/Contexts';
 import { getSubscription } from '../Helpers/PushNotification';
 
 export default function Loading() {
 
     const { userStore, setUserStore } = useContext(UserContext);
-
+    const { setAlert } = useContext(AlertContext);
     useEffect(() => {
-        getSubscription(userStore.username).then(() => {
+        getSubscription(userStore.username).then((res) => {
+            if (!res.success) {
+                setAlert({
+                    isAlert: true,
+                    status: 'warning',
+                    message: res.message
+                });
+            }
             setUserStore({ ...userStore, isLoading: false })
         })
     }, []);

@@ -41,21 +41,17 @@ export default function OutlinedCard(props) {
                 }
                 action={
                     <div className={classes.action}>{
-                        props.currentlySmoking === 1 ? (
+                        props.currentlySmoking ? (
                             <Button
                                 variant="contained"
                                 className={classes.button}
                                 startIcon={<BiWalk />}
-                                style={{ color: 'green' }}>
+                                style={{ color: 'green' }}
+                                onClick={()=>console.log('TODO: On my Way')}>
                                 On my Way
+                                
                             </Button>) : (
-                            <Button
-                                variant="contained"
-                                className={classes.button}
-                                startIcon={<BiTrash />}
-                                style={{ color: 'red' }}>
-                                Delete
-                            </Button>
+                            <>TO DO</>
                         )}
                     </div>}
                 title={props.title}

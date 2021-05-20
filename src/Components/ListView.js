@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     listRoot: {
         display: 'flex',
         justifyContent: 'center',
-        height: '55vH',
+        height: '64vH',
         overflow: 'auto',
     },
 

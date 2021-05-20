@@ -24,18 +24,26 @@ export function getSubscription(username) {
 
     return navigator.serviceWorker.ready.then(function (registration) {
         console.log('Registration successful, scope is:', registration.scope);
-        registration.pushManager.getSubscription().then(function (sub) {
-            if (sub === null) {
-                console.log('Not subscribed to push service!');
-                subscribeUser(username);
-            } else {
-                // We have a subscription, update the database
-                // Check if subcription object is the same as the one in the db
-                console.log('Have a Subscription object: ');
-                subscribeUser(username);
-            }
-        });
+        if (registration.pushManager) {
+            registration.pushManager.getSubscription().then(function (sub) {
+                if (sub === null) {
+                    console.log('Not subscribed to push service!');
+                    subscribeUser(username);
+                } else {
+                    // We have a subscription, update the database
+                    // Check if subcription object is the same as the one in the db
+                    console.log('Have a Subscription object: ');
+                    subscribeUser(username);
+                }
+            });
+        }
+        else {
+            return { success: false, message: 'Push Notifications are not supported, for the full experience switch to another browser' }
+
+        }
     });
+
+
 }
 
 function subscribeUser(username) {
@@ -59,7 +67,7 @@ function subscribeUser(username) {
             }).catch(function (e) {
 
                 if (Notification.permission === 'denied') {
-                    console.warn('Permission for notifications was denied');
+                    return { success: false, message: 'Please allow Notifications' }
                 } else {
                     console.error('Unable to subscribe to push', e);
                 }

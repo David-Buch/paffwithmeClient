@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -23,7 +23,7 @@ import Customize from '../Pages/Customize';
 import Avatar from '@material-ui/core/Avatar';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import deepOrange from '@material-ui/core/colors/deepOrange'
-import { AlertContext, UserContext } from '../Data/Contexts';
+import { AlertContext, SmokingContext, UserContext } from '../Data/Contexts';
 import Alert from '@material-ui/lab/Alert';
 
 const drawerWidth = 240;
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column'
     },
     alert: {
-        paddingTop: 50,
+        paddingTop: 60,
     },
     drawerBottom: {
 
@@ -109,7 +109,9 @@ function ResponsiveDrawer(props) {
     const classes = useStyles();
     const theme = useTheme();
     let history = useHistory();
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [isSmoking, setSmoking] = useState(false);
+
     const { userStore, setUserStore } = useContext(UserContext);
     const { alert, setAlert } = useContext(AlertContext);
 
@@ -226,21 +228,23 @@ function ResponsiveDrawer(props) {
                         </Drawer>
                     </Hidden>
                 </nav>
-                <main className={classes.content}>
-                    <div className={classes.alert}>
-                        {alert.isAlert ? (
-                            <div>
-                                <Alert severity={alert.status} color={alert.status} onClose={() => { setAlert({ ...alert, isAlert: false }) }}>{alert.message}</Alert>
-                            </div>) :// <div className={classes.toolbar} />
-                            null}
-                    </div>
+                <SmokingContext.Provider value={{ isSmoking, setSmoking }}>
+                    <main className={classes.content}>
+                        <div className={classes.alert}>
+                            {alert.isAlert ? (
+                                <div>
+                                    <Alert severity={alert.status} color={alert.status} onClose={() => { setAlert({ ...alert, isAlert: false }) }}>{alert.message}</Alert>
+                                </div>) :// <div className={classes.toolbar} />
+                                null}
+                        </div>
 
-                    <Switch>
-                        <Route path='/' component={BottomTab} />
-                        <Route path='/settings' component={Settings} />
-                        <Route path='/customize' component={Customize} />
-                    </Switch>
-                </main>
+                        <Switch>
+                            <Route path='/' component={BottomTab} />
+                            <Route path='/settings' component={Settings} />
+                            <Route path='/customize' component={Customize} />
+                        </Switch>
+                    </main>
+                </SmokingContext.Provider>
             </Router>
         </div>
     );

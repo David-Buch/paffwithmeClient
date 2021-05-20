@@ -96,7 +96,7 @@ self.addEventListener('push', function (e) {
     },
     actions: [
       {
-        action: 'explore', title: 'Explore this new world',
+        action: 'explore', title: 'Check out the latest pipe activities',
         icon: 'images/checkmark.png'
       },
       {
@@ -106,4 +106,17 @@ self.addEventListener('push', function (e) {
     ]
   };
   e.waitUntil(self.registration.showNotification(title, options));
+});
+
+//Click Notification
+self.addEventListener('notificationclick', function (e) {
+  var notification = e.notification;
+  var action = e.action;
+
+  if (action === 'close') {
+    notification.close();
+  } else {
+    clients.openWindow('https://www.smokeapipe.netlify.app/live');
+    notification.close();
+  }
 });
