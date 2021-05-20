@@ -69,7 +69,7 @@ function subscribeUser(username) {
                 if (Notification.permission === 'denied') {
                     return { success: false, message: 'Please allow Notifications' }
                 } else {
-                    console.error('Unable to subscribe to push', e);
+                    return { success: false, message: 'Unable to subscribe to push', e }
                 }
             });
         })

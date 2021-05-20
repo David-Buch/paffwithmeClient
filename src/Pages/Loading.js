@@ -9,6 +9,7 @@ export default function Loading() {
     const { setAlert } = useContext(AlertContext);
     useEffect(() => {
         getSubscription(userStore.username).then((res) => {
+            console.log(res)
             if (!res.success) {
                 setAlert({
                     isAlert: true,
