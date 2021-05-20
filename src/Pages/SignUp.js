@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Alert from '@material-ui/lab/Alert';
 import { CgProfile } from 'react-icons/cg';
-import { UserContext } from '../Data/UserContext';
+import { UserContext } from '../Data/Contexts';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { signupUser } from '../Helpers/Api';

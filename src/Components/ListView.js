@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { List } from 'antd';
 import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';

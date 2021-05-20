@@ -11,9 +11,7 @@ import { BiSend } from 'react-icons/bi';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { sendPushtoAll, sendSmokeData } from '../Helpers/Api';
-import { UserContext } from '../Data/UserContext';
-import { BottomSheetContext } from '../Data/BottomSheetContext';
-import { AlertContext } from '../Data/AlertContext';
+import { SmokingContext, AlertContext, BottomSheetContext, UserContext } from '../Data/Contexts';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -64,6 +62,7 @@ export default function SheetForm() {
     const { userStore } = useContext(UserContext);
     const { setAlert } = useContext(AlertContext);
     const { setBsOpen } = useContext(BottomSheetContext);
+    const { setSmoking } = useContext(SmokingContext);
     let currentHours = ('0' + new Date().getHours()).substr(-2);
     let currentMin = Math.ceil(new Date().getMinutes() / 5) * 5;
 
@@ -79,12 +78,17 @@ export default function SheetForm() {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             setBsOpen(false);
+            const smokingDuration = getDuration(values.startTime, values.endTime);
             sendPushtoAll(
                 userStore.username
             ).then((res) => { console.log(res.data); });
             sendSmokeData(userStore.username, values.location, values.startTime, values.endTime)
                 .then((res) => {
-                    if (res.success) { setAlert({ isAlert: true, status: 'success', message: 'send SmokeData worked' }) }
+                    if (res.success) {
+                        setAlert({ isAlert: true, status: 'success', message: 'send SmokeData worked' })
+                        setSmoking(true);
+                        setTimeout(setSmoking(false), smokingDuration * 1000);
+                    }
                     else {
                         if (res.message) { setAlert({ isAlert: true, status: 'waring', message: res.message }) }
                         else { setAlert({ isAlert: true, status: 'error', message: res.error }) }
@@ -92,6 +96,18 @@ export default function SheetForm() {
                 })
         },
     });
+    function getDuration(startTime, endTime) {
+        var duration =
+            (endTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60) -
+            (startTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60);
+        if (duration <= 0) {
+            duration =
+                (endTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60) -
+                (startTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60) + (24 * 60 * 60);
+
+        }
+        return duration;
+    }
 
     return (
         <div>

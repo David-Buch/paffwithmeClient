@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Drawer from './Layout/Drawer';
-import { UserContext } from './Data/UserContext';
-import { AlertContext } from './Data/AlertContext';
+import { UserContext, AlertContext } from './Data/Contexts';
 import {
     BrowserRouter as Router,
     Route
@@ -14,7 +13,7 @@ import Loading from './Pages/Loading';
 export default function App() {
     const [userStore, setUserStore] = useState({
         username: '',
-        isLoggedIn: false, //
+        isLoggedIn: true, //
         isLoading: false,
     });
     const [alert, setAlert] = useState({

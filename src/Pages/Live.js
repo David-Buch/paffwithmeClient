@@ -1,8 +1,9 @@
 import { makeStyles } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress'
 import React, { useContext, useEffect, useState } from 'react';
 import ListView from '../Components/ListView';
 import Stories from '../Components/Stories';
-import { AlertContext } from '../Data/AlertContext';
+import { AlertContext } from '../Data/Contexts';
 import { getSmokeData } from '../Helpers/Api';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,11 +32,13 @@ const useStyles = makeStyles((theme) => ({
 export default function Live() {
     const classes = useStyles();
     const [data, setData] = useState([]);
+    const [isLoading, setLoading] = useState(false);
     const { setAlert } = useContext(AlertContext);
 
     useEffect(() => {
-        console.log('hi');
+        setLoading(true);
         getSmokeData().then((res) => {
+            setLoading(false);
             if (res.success) {
                 console.log(res);
                 setData(JSON.parse(res.smokeData));
@@ -50,10 +53,12 @@ export default function Live() {
     return (
         <div className={classes.root}>
             <div className={classes.storys}>
-                <Stories data={data} />
+                {isLoading ? (<CircularProgress />) : (
+                    <Stories data={data} />)}
             </div>
             <div className={classes.listView}>
-                <ListView data={data} />
+                {isLoading ? (<CircularProgress />) : (
+                    <ListView data={data} />)}
             </div>
         </div>
     );

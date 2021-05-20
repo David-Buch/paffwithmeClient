@@ -3,7 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { Avatar, CardHeader, Button } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import CardHeader from '@material-ui/core/CardHeader';
+import Button from '@material-ui/core/Button';
 
 import { CgProfile } from 'react-icons/cg';
 import { BiWalk, BiTrash } from 'react-icons/bi';

@@ -20,10 +20,10 @@ import { Route, Switch, Link, BrowserRouter as Router, useHistory } from 'react-
 import BottomTab from './BottomTab';
 import Settings from '../Pages/Settings';
 import Customize from '../Pages/Customize';
-import { Avatar, SwipeableDrawer } from '@material-ui/core';
-import { deepOrange } from '@material-ui/core/colors'
-import { UserContext } from '../Data/UserContext';
-import { AlertContext } from '../Data/AlertContext';
+import Avatar from '@material-ui/core/Avatar';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import deepOrange from '@material-ui/core/colors/deepOrange'
+import { AlertContext, UserContext } from '../Data/Contexts';
 import Alert from '@material-ui/lab/Alert';
 
 const drawerWidth = 240;
