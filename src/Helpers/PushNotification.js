@@ -16,7 +16,8 @@ function urlBase64ToUint8Array(base64String) {
     return outputArray;
 }
 const convertedKey = urlBase64ToUint8Array(publicKey);
-//chrome://inspect/#devices
+
+
 export function getSubscription(username) {
     Notification.requestPermission(function (status) {
         console.log('Notification permission status:', status);
@@ -27,12 +28,18 @@ export function getSubscription(username) {
             registration.pushManager.getSubscription().then(function (sub) {
                 if (sub === null) {
                     console.log('Not subscribed to push service!');
-                    subscribeUser(username).then((res) => { return res; });
+                    return subscribeUser(username).then((res) => {
+                        console.log(res);
+                        return res;
+                    });
                 } else {
                     // We have a subscription, update the database
                     // Check if subcription object is the same as the one in the db
                     console.log('Have a Subscription object: ');
-                    subscribeUser(username).then((res) => { return res; });
+                    return subscribeUser(username).then((res) => {
+                        console.log(res);
+                        return res;
+                    });
                 }
             });
         }
