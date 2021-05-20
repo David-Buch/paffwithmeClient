@@ -21,19 +21,18 @@ export function getSubscription(username) {
     Notification.requestPermission(function (status) {
         console.log('Notification permission status:', status);
     });
-
     return navigator.serviceWorker.ready.then(function (registration) {
         console.log('Registration successful, scope is:', registration.scope);
         if (registration.pushManager) {
             registration.pushManager.getSubscription().then(function (sub) {
                 if (sub === null) {
                     console.log('Not subscribed to push service!');
-                    return subscribeUser(username);
+                    subscribeUser(username).then((res) => { return res; });
                 } else {
                     // We have a subscription, update the database
                     // Check if subcription object is the same as the one in the db
                     console.log('Have a Subscription object: ');
-                    return subscribeUser(username);
+                    subscribeUser(username).then((res) => { return res; });
                 }
             });
         }
