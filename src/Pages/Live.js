@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress'
 import React, { useContext, useEffect, useState } from 'react';
 import ListView from '../Components/ListView';
+import CustomModal from '../Components/CustomModal';
 import Stories from '../Components/Stories';
 import { AlertContext, UserContext } from '../Data/Contexts';
 import { getSmokeData } from '../Helpers/Api';
@@ -33,6 +34,7 @@ export default function Live() {
     const classes = useStyles();
     const [data, setData] = useState([]);
     const [isLoading, setLoading] = useState(false);
+    const [isOpen, setOpen] = useState(false);
     const { setAlert } = useContext(AlertContext);
     const { userStore } = useContext(UserContext);
 
@@ -58,8 +60,10 @@ export default function Live() {
             </div>
             <div className={classes.listView}>
                 {isLoading ? (<CircularProgress />) : (
-                    <ListView data={data} />)}
+                    <ListView data={data} onClick={() => { setOpen(true) }} />)}
             </div>
+            <CustomModal open={isOpen}
+                onClose={() => setOpen(false)} />
         </div>
     );
 }

@@ -12,6 +12,8 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
+import { NetworkFirst } from 'workbox-strategies';
+import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 
 clientsClaim();
 
@@ -19,9 +21,31 @@ clientsClaim();
 // Their URLs are injected into the manifest variable below.
 // This variable must be present somewhere in your service worker file,
 // even if you decide not to use precaching. See https://cra.link/PWA
+
+//const ignored = self.__WB_MANIFEST;
 precacheAndRoute(self.__WB_MANIFEST);
 
 //https://developers.google.com/web/tools/workbox/modules/workbox-strategies
+
+//Page cache recipie from https://developers.google.com/web/tools/workbox/modules/workbox-recipes#page_cache
+/*
+const cacheName = 'pages';
+const matchCallback = ({ request }) => request.mode === 'navigate';
+const networkTimeoutSeconds = 3;
+
+registerRoute(
+  matchCallback,
+  new NetworkFirst({
+    networkTimeoutSeconds,
+    cacheName,
+    plugins: [
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
+      }),
+    ],
+  }),
+);
+*/
 
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at
@@ -116,7 +140,7 @@ self.addEventListener('notificationclick', function (e) {
   if (action === 'close') {
     notification.close();
   } else {
-    clients.openWindow('https://www.smokeapipe.netlify.app/live');
+    clients.openWindow('https://smokeapipe.netlify.app/live');
     notification.close();
   }
 });

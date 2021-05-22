@@ -21,10 +21,10 @@ const convertedKey = urlBase64ToUint8Array(publicKey);
 export function getSubscription(username) {
     Notification.requestPermission(function (status) {
         console.log('Notification permission status:', status);
-        if (Notification.permission === 'denied') {
-            return { success: false, message: 'Please allow Notifications' }
-        }
     });
+    if (Notification.permission === 'denied') {
+        return { success: false, message: 'Please allow Notifications' }
+    }
     return navigator.serviceWorker.ready.then(function (registration) {
         console.log('Registration successful, scope is:', registration.scope);
         if (registration.pushManager) {

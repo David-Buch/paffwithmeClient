@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Drawer from './Layout/Drawer';
 import { UserContext, AlertContext } from './Data/Contexts';
 import {
@@ -8,6 +8,8 @@ import {
 import SignIn from './Pages/SignIn';
 import SignUp from './Pages/SignUp';
 import Loading from './Pages/Loading';
+import { getUser, setAxiosCredentials } from './Helpers/Api';
+import axios from 'axios';
 
 
 export default function App() {
@@ -21,6 +23,28 @@ export default function App() {
         status: '', //error,success,warning, info
         message: ''
     });
+    axios.defaults.withCredentials = true;
+    useEffect(() => {
+
+        getUser().then((res) => {
+            console.log(res);
+            if (res.success) {
+                setUserStore({
+                    username: res.username,
+                    isLoggedIn: true, //
+                    isLoading: false,
+                })
+            }
+            else {
+                setAlert({
+                    isAlert: true,
+                    status: 'warning',
+                    message: res.message
+                })
+            }
+
+        });
+    }, [])
     return (
         <UserContext.Provider value={{ userStore, setUserStore }}>
             <AlertContext.Provider value={{ alert, setAlert }}>

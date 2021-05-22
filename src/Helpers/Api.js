@@ -20,7 +20,7 @@ export function loginUser(username, password) {
         {
             username: username,
             password: password
-        }).then(res => res.data)
+        }, { withCredentials: true }).then(res => res.data)
         .catch(error => {
             console.log(error);
             return error;
@@ -28,7 +28,6 @@ export function loginUser(username, password) {
 }
 
 export function signupUser(username, password) {
-
     return axios.post('https://paffwithme.herokuapp.com/user/register',
         {
             username: username,
@@ -69,5 +68,13 @@ export function sendSmokeData(username, location, startTime, endTime) {
         .catch(error => {
             console.log(error);
             return error;
+        });
+}
+export function getUser() {
+    return axios.get('https://paffwithme.herokuapp.com/user/login',)
+        .then(res => res.data)
+        .catch(error => {
+            console.log(error);
+            throw new Error(error);
         });
 }

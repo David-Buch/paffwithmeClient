@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column'
     },
     alert: {
-        paddingTop: 60,
+        paddingTop: 50,
     },
     drawerBottom: {
 

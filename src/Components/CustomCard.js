@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -30,6 +30,7 @@ const useStyles = makeStyles({
 
 export default function OutlinedCard(props) {
     const classes = useStyles();
+    
     return (
         <Card className={classes.cardRoot} variant="elevation">
             <CardHeader
@@ -41,15 +42,15 @@ export default function OutlinedCard(props) {
                 }
                 action={
                     <div className={classes.action}>{
-                        props.currentlySmoking ? (
+                        !props.currentlySmoking ? (
                             <Button
                                 variant="contained"
                                 className={classes.button}
                                 startIcon={<BiWalk />}
                                 style={{ color: 'green' }}
-                                onClick={()=>console.log('TODO: On my Way')}>
+                                onClick={props.onClick}>
                                 On my Way
-                                
+                            
                             </Button>) : (
                             <>TO DO</>
                         )}
@@ -70,5 +71,6 @@ export default function OutlinedCard(props) {
                 </Typography>
             </CardContent>
         </Card>
+        
     );
 }
