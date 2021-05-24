@@ -8,14 +8,12 @@ import {
 import SignIn from './Pages/SignIn';
 import SignUp from './Pages/SignUp';
 import Loading from './Pages/Loading';
-import { getUser, setAxiosCredentials } from './Helpers/Api';
-import axios from 'axios';
-
+import { getUser } from './Helpers/Api';
 
 export default function App() {
     const [userStore, setUserStore] = useState({
         username: '',
-        isLoggedIn: false, //
+        isLoggedIn: false,
         isLoading: false,
     });
     const [alert, setAlert] = useState({
@@ -23,7 +21,6 @@ export default function App() {
         status: '', //error,success,warning, info
         message: ''
     });
-    axios.defaults.withCredentials = true;
     useEffect(() => {
 
         getUser().then((res) => {
@@ -36,11 +33,7 @@ export default function App() {
                 })
             }
             else {
-                setAlert({
-                    isAlert: true,
-                    status: 'warning',
-                    message: res.message
-                })
+                console.log(res.message);
             }
 
         });

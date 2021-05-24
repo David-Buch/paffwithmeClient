@@ -25,6 +25,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import deepOrange from '@material-ui/core/colors/deepOrange'
 import { AlertContext, SmokingContext, UserContext } from '../Data/Contexts';
 import Alert from '@material-ui/lab/Alert';
+import { UserlogOut } from '../Helpers/Api';
 
 const drawerWidth = 240;
 
@@ -121,11 +122,27 @@ function ResponsiveDrawer(props) {
 
     const doLogout = () => {
         console.log('loggedOut');
-        setUserStore({
-            username: '',
-            isLoggedIn: false,
-        });
-        history.push('/');
+        UserlogOut(userStore.username)
+            .then((res) => {
+                console.log(res.message);
+                if (res.success) {
+                    setUserStore({
+                        username: '',
+                        isLoggedIn: false,
+                        isLoading: false
+                    });
+                }
+                else {
+                    setAlert({
+                        isAlert: true,
+                        status: 'error', //error,success,warning, info
+                        message: res.message
+                    })
+                }
+                history.push('/');
+            })
+
+
 
     };
 

@@ -67,35 +67,39 @@ export default function SheetForm() {
     let currentMin = ('0' + Math.ceil(new Date().getMinutes() / 5) * 5).substr(-2);
 
     let currentTime = currentHours.concat(':', currentMin);
+
+    const send = (values, smokingDuration) => {
+        sendPushtoAll(
+            userStore.username
+        ).then((res) => { console.log(res.data); });
+        sendSmokeData(userStore.username, values.location, values.startTime, values.endTime)
+            .then((res) => {
+                if (res.success) {
+                    setAlert({ isAlert: true, status: 'success', message: 'Push was send! Enjoy your pipe!' });
+                    setSmoking(true);
+                    console.log(smokingDuration);
+                    setTimeout(() => { setSmoking(false) }, smokingDuration * 1000);
+                }
+                else {
+                    if (res.message) { setAlert({ isAlert: true, status: 'waring', message: res.message }) }
+                    else { setAlert({ isAlert: true, status: 'error', message: res.error }) }
+                }
+            })
+    }
+
     const formik = useFormik({
         initialValues: {
             location: '',
             startTime: currentTime,
             endTime: '',
-
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
             setBsOpen(false);
             const smokingDuration = getDuration(values.startTime, values.endTime);
-            sendPushtoAll(
-                userStore.username
-            ).then((res) => { console.log(res.data); });
-            sendSmokeData(userStore.username, values.location, values.startTime, values.endTime)
-                .then((res) => {
-                    if (res.success) {
-                        setAlert({ isAlert: true, status: 'success', message: 'Push was send! Enjoy your pipe!' });
-                        setSmoking(true);
-                        console.log(smokingDuration);
-                        setTimeout(() => { setSmoking(false) }, smokingDuration * 1000);
-                    }
-                    else {
-                        if (res.message) { setAlert({ isAlert: true, status: 'waring', message: res.message }) }
-                        else { setAlert({ isAlert: true, status: 'error', message: res.error }) }
-                    }
-                })
-        },
-    });
+            send(values, smokingDuration);
+        }
+    })
     function getDuration(startTime, endTime) {
         var duration =
             (endTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60) -

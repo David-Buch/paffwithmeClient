@@ -99,20 +99,11 @@ self.addEventListener('message', (event) => {
 
 //Handel PushNotifications
 self.addEventListener('push', function (e) {
-  console.log('[Service Worker] Push Received.');
-  var body;
-  if (e.data) {
-    body = e.data;
-    var body2 = e.data.text
-  } else {
-    body = 'Push message no payload';
-  }
-  console.log(body);
-  console.log(body2);
-  var title = 'HI';
+  const payload = e.data ? e.data.text() : 'no payload';
+  var title = 'Pipe Smoked';
   var options = {
-    body: body,
-    icon: 'images/notification-flat.png',
+    body: payload,
+    icon: 'img/pipe-icon.png',
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
@@ -120,11 +111,11 @@ self.addEventListener('push', function (e) {
     },
     actions: [
       {
-        action: 'explore', title: 'Check out the latest pipe activities',
+        action: 'explore', title: 'Check it out',
         icon: 'images/checkmark.png'
       },
       {
-        action: 'close', title: 'I don\'t want any of this',
+        action: 'close', title: 'Close',
         icon: 'images/xmark.png'
       },
     ]

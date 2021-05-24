@@ -2,10 +2,10 @@ import { makeStyles } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress'
 import React, { useContext, useEffect, useState } from 'react';
 import ListView from '../Components/ListView';
-import CustomModal from '../Components/CustomModal';
 import Stories from '../Components/Stories';
-import { AlertContext, UserContext } from '../Data/Contexts';
+import { AlertContext, OMWContext, UserContext } from '../Data/Contexts';
 import { getSmokeData } from '../Helpers/Api';
+import OMWDialog from '../Components/OMWDialog';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,7 +34,13 @@ export default function Live() {
     const classes = useStyles();
     const [data, setData] = useState([]);
     const [isLoading, setLoading] = useState(false);
-    const [isOpen, setOpen] = useState(false);
+    const [omwData, setOmwData] = useState({
+        isOpen: false,
+        startTime: '',
+        endTime: '',
+        location: ''
+    });
+
     const { setAlert } = useContext(AlertContext);
     const { userStore } = useContext(UserContext);
 
@@ -53,17 +59,21 @@ export default function Live() {
         })
     }, []);
     return (
-        <div className={classes.root}>
-            <div className={classes.storys}>
-                {isLoading ? (<CircularProgress />) : (
-                    <Stories data={data} />)}
+        <OMWContext.Provider value={{ omwData, setOmwData }}>
+            <div className={classes.root}>
+                <div className={classes.storys}>
+                    {isLoading ? (<CircularProgress />) : (
+                        <Stories data={data} />)}
+                </div>
+                <div className={classes.listView}>
+                    {isLoading ? (<CircularProgress />) : (
+                        <ListView data={data} />)}
+                </div>
+                <OMWDialog
+                    open={omwData.isOpen}
+
+                />
             </div>
-            <div className={classes.listView}>
-                {isLoading ? (<CircularProgress />) : (
-                    <ListView data={data} onClick={() => { setOpen(true) }} />)}
-            </div>
-            <CustomModal open={isOpen}
-                onClose={() => setOpen(false)} />
-        </div>
+        </OMWContext.Provider>
     );
 }

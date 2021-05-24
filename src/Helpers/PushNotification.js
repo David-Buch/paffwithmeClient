@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const publicKey = process.env.REACT_APP_PUBLIC_VAPID_KEY;
+
 function urlBase64ToUint8Array(base64String) {
     const padding = "=".repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
@@ -15,7 +16,9 @@ function urlBase64ToUint8Array(base64String) {
     }
     return outputArray;
 }
-const convertedKey = urlBase64ToUint8Array(publicKey);
+const vapidPublicKey = 'BEfTrbmLEi8GZXmNyPBr7lUhaxCc6-OGO8ygoCk2l4ljF81cVD9kkNSzmsMqE4k-r9el-adxNQwB1glNryD4AcE';
+const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+
 
 
 export function getSubscription(username) {
@@ -60,7 +63,7 @@ function subscribeUser(username) {
         return navigator.serviceWorker.ready.then(function (reg) {
             return reg.pushManager.subscribe({
                 userVisibleOnly: true,
-                applicationServerKey: convertedKey
+                applicationServerKey: convertedVapidKey
             }).then(function (sub) {
                 return sendSubscriptionToBackEnd(sub, username).then((res) => {
                     console.log(res);

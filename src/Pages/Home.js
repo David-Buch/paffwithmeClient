@@ -32,7 +32,6 @@ export default function Home() {
     const { isSmoking } = useContext(SmokingContext);
     const [isBsOpen, setBsOpen] = useState(false);
 
-
     return (
 
         <div className={classes.root}>

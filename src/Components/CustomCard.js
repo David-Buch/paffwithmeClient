@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,9 +8,10 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
 
 import { CgProfile } from 'react-icons/cg';
-import { BiWalk, BiTrash } from 'react-icons/bi';
+import { BiWalk} from 'react-icons/bi';
 import { HiLocationMarker } from 'react-icons/hi';
 import { FaHourglassStart, FaHourglassEnd } from 'react-icons/fa'
+import { OMWContext } from '../Data/Contexts';
 
 const useStyles = makeStyles({
     cardRoot: {
@@ -30,7 +31,17 @@ const useStyles = makeStyles({
 
 export default function OutlinedCard(props) {
     const classes = useStyles();
+    const {setOmwData}=useContext(OMWContext);
     
+function handleOMW(){
+    setOmwData({
+        isOpen:true,
+        to:props.title,
+        startTime:props.startTime,
+        endTime:props.endTime,
+        location:props.location
+    });
+}
     return (
         <Card className={classes.cardRoot} variant="elevation">
             <CardHeader
@@ -48,7 +59,7 @@ export default function OutlinedCard(props) {
                                 className={classes.button}
                                 startIcon={<BiWalk />}
                                 style={{ color: 'green' }}
-                                onClick={props.onClick}>
+                                onClick={()=>handleOMW()}>
                                 On my Way
                             
                             </Button>) : (

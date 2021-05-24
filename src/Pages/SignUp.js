@@ -13,7 +13,9 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { signupUser } from '../Helpers/Api';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import { BiLeftArrowAlt } from 'react-icons/bi';
+import IconButton from '@material-ui/core/IconButton';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -71,6 +73,7 @@ const validationSchema = Yup.object({
 
 export default function SignUp() {
     const classes = useStyles();
+    let history = useHistory();
     const { setUserStore } = useContext(UserContext);
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState({
@@ -111,6 +114,10 @@ export default function SignUp() {
 
     return (
         <div className={classes.root}>
+            <IconButton aria-label="back" color='primary'
+                onClick={() => { history.push('/') }}>
+                <BiLeftArrowAlt size={40} />
+            </IconButton>
             <div className={classes.errorDisplay}>
                 {error.isError ? (
                     <Alert

@@ -62,7 +62,6 @@ export default function ListView(props) {
                             startTime={user.startTime}
                             endTime={user.endTime}
                             location={user.location}
-                            onClick={props.onClick}
                         />
                     )}
                 />

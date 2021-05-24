@@ -17,8 +17,10 @@ export default function Loading() {
                     message: res.message
                 });
             }
-            setUserStore({ ...userStore, isLoading: false })
-        })
+            else {
+                setUserStore({ ...userStore, isLoading: false });
+            }
+        });
     }, []);
 
     return (
