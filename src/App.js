@@ -9,6 +9,7 @@ import SignIn from './Pages/SignIn';
 import SignUp from './Pages/SignUp';
 import Loading from './Pages/Loading';
 import { getUser } from './Helpers/Api';
+import Cookies from 'universal-cookie';
 
 export default function App() {
     const [userStore, setUserStore] = useState({
@@ -22,21 +23,31 @@ export default function App() {
         message: ''
     });
     useEffect(() => {
-
-        getUser().then((res) => {
-            console.log(res);
-            if (res.success) {
-                setUserStore({
-                    username: res.username,
-                    isLoggedIn: true, //
-                    isLoading: false,
-                })
-            }
-            else {
-                console.log(res.message);
-            }
-
-        });
+        const cookie = new Cookies().get('userID');
+        console.log(cookie);
+        if (cookie) {
+            setUserStore({
+                username: cookie,
+                isLoggedIn: true, //
+                isLoading: false,
+            })
+        }
+        /*
+                getUser().then((res) => {
+                    console.log(res);
+                    if (res.success) {
+                        setUserStore({
+                            username: res.username,
+                            isLoggedIn: true, //
+                            isLoading: false,
+                        })
+                    }
+                    else {
+                        console.log(res.message);
+                    }
+        
+                });
+                */
     }, [])
     return (
         <UserContext.Provider value={{ userStore, setUserStore }}>

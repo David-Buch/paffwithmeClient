@@ -29,6 +29,7 @@
     "react-window": "^1.8.6",
     "source-map-explorer": "^2.5.2",
     "styled-components": "^5.2.3",
+    "universal-cookie": "^4.0.4",
     "web-vitals": "^0.2.4",
     "workbox-background-sync": "^5.1.4",
     "workbox-broadcast-update": "^5.1.4",

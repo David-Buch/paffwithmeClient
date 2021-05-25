@@ -26,6 +26,7 @@ import deepOrange from '@material-ui/core/colors/deepOrange'
 import { AlertContext, SmokingContext, UserContext } from '../Data/Contexts';
 import Alert from '@material-ui/lab/Alert';
 import { UserlogOut } from '../Helpers/Api';
+import Cookies from 'universal-cookie';
 
 const drawerWidth = 240;
 
@@ -122,6 +123,15 @@ function ResponsiveDrawer(props) {
 
     const doLogout = () => {
         console.log('loggedOut');
+        const cookie = new Cookies();
+        cookie.remove('userID');
+        history.push('/');
+        setUserStore({
+            username: '',
+            isLoggedIn: false,
+            isLoading: false
+        });
+        /*
         UserlogOut(userStore.username)
             .then((res) => {
                 console.log(res.message);
@@ -139,10 +149,9 @@ function ResponsiveDrawer(props) {
                         message: res.message
                     })
                 }
-                history.push('/');
+                
             })
-
-
+            */
 
     };
 

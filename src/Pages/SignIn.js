@@ -16,6 +16,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { loginUser } from '../Helpers/Api';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Cookies from 'universal-cookie';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -85,11 +86,18 @@ export default function SignIn() {
                 setLoading(false);
                 if (response.success) {
                     //login worked
+                    const cookie = new Cookies();
+                    const d1 = new Date();
+                    d1.setDate(new Date().getDate() + 14)
+                    console.log(d1);
+                    cookie.set('userID', response.username, { path: '/', expires: d1 });
+
                     setUserStore({
                         username: response.username,
                         isLoggedIn: true,
                         isLoading: true
                     });
+
                 }
                 else {
                     //login didnt work 
