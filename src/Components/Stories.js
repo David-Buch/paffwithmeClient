@@ -3,15 +3,22 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import List from 'antd/lib/list';
 import React from 'react';
-
-
-const useStyles = makeStyles({
+import IconButton from '@material-ui/core/IconButton';
+import Box from '@material-ui/core/Box';
+import { colors } from './Colors';
+const useStyles = makeStyles((theme) => ({
     storyRoot: {
         display: 'flex',
         flexDirection: 'row',
+    },
+    story: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+
     }
 
-});
+}));
 
 export default function Stories(props) {
     const classes = useStyles();
@@ -24,14 +31,23 @@ export default function Stories(props) {
                 renderItem={item => (
                     <div>
                         {item.currentlySmoking ? (
-                            <div>
-                                <Avatar alt="profileAvatar"
-                                    component='div'>
-                                    <Typography variant="h2">
-                                        {item.username.charAt(0).toUpperCase()}
-                                    </Typography>
-                                </Avatar>
-                                {item.username}
+                            <div className={classes.story}>
+                                <IconButton onClick={() => console.log('hi')}>
+                                    <Box border={2} color='black'
+                                        borderRadius="50%">
+                                        <Avatar alt="profileAvatar"
+                                            component='div'
+                                            style={colors[item.color]}>
+                                            <Typography variant="h4">
+                                                {item.username.charAt(0).toUpperCase()}
+                                            </Typography>
+                                        </Avatar>
+                                    </Box>
+                                </IconButton>
+                                <Typography variant="h6">
+                                    {item.username}
+                                </Typography>
+
                             </div>
 
                         ) : (null)}

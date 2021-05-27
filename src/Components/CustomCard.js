@@ -12,11 +12,21 @@ import { BiWalk} from 'react-icons/bi';
 import { HiLocationMarker } from 'react-icons/hi';
 import { FaHourglassStart, FaHourglassEnd } from 'react-icons/fa'
 import { OMWContext } from '../Data/Contexts';
+import deepOrange from '@material-ui/core/colors/deepOrange';
+import deepPurple from '@material-ui/core/colors/deepPurple';
+import green from '@material-ui/core/colors/green';
+import red from '@material-ui/core/colors/red';
+import yellow from '@material-ui/core/colors/yellow';
+import { colors } from './Colors';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme)=>({
+    
     cardRoot: {
         borderRadius: '10%',
         marginBottom: 10,
+    },
+    avatar:{
+
     },
     title: {
         fontSize: 14,
@@ -27,7 +37,8 @@ const useStyles = makeStyles({
     action: {
         paddingRight: 5
     }
-});
+
+}));
 
 export default function OutlinedCard(props) {
     const classes = useStyles();
@@ -47,13 +58,17 @@ function handleOMW(){
             <CardHeader
                 className={classes.cardHeader}
                 avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                        <CgProfile />
+                    <Avatar aria-label="recipe" style={colors[props.color]}
+                    className={classes.avatar}>
+                        {props.title.charAt(0).toUpperCase()}
                     </Avatar>
                 }
                 action={
-                    <div className={classes.action}>{
-                        !props.currentlySmoking ? (
+                    <div className={classes.action}>
+                        
+                        {console.log(props.smoking)}
+                        {
+                        props.smoking ? (
                             <Button
                                 variant="contained"
                                 className={classes.button}

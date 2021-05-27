@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         width: '100vW',
-        padding: 5,
+        paddingTop: 5,
 
     },
     storys: {

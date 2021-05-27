@@ -14,7 +14,8 @@ import Cookies from 'universal-cookie';
 export default function App() {
     const [userStore, setUserStore] = useState({
         username: '',
-        isLoggedIn: false,
+        color: 0,
+        isLoggedIn: true,  //
         isLoading: false,
     });
     const [alert, setAlert] = useState({

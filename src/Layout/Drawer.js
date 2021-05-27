@@ -22,11 +22,12 @@ import Settings from '../Pages/Settings';
 import Customize from '../Pages/Customize';
 import Avatar from '@material-ui/core/Avatar';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import deepOrange from '@material-ui/core/colors/deepOrange'
 import { AlertContext, SmokingContext, UserContext } from '../Data/Contexts';
 import Alert from '@material-ui/lab/Alert';
 import { UserlogOut } from '../Helpers/Api';
 import Cookies from 'universal-cookie';
+import { colors } from '../Components/Colors';
+import { CgProfile } from 'react-icons/cg';
 
 const drawerWidth = 240;
 
@@ -92,10 +93,8 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     avatar: {
-        width: theme.spacing(12),
-        height: theme.spacing(12),
-        color: theme.palette.getContrastText(deepOrange[500]),
-        backgroundColor: deepOrange[500],
+        width: theme.spacing(10),
+        height: theme.spacing(10),
     },
     username: {
         paddingTop: 10,
@@ -157,12 +156,19 @@ function ResponsiveDrawer(props) {
 
     const firstLetter = userStore.username.charAt(0).toUpperCase();
 
+    const icons = [
+        <BsGearFill size={30} />,
+        <BsPlus size={30} />,
+        <CgProfile size={30} />,
+        null
+    ];
+
     const drawer = (
         <div>
             <div className={classes.profileArea}>
-                <Avatar alt="profileAvatar" className={classes.avatar}
+                <Avatar alt="profileAvatar" style={colors[4]} className={classes.avatar}
                     component='div'>
-                    <Typography variant="h2">
+                    <Typography>
                         {firstLetter}
                     </Typography>
                 </Avatar>
@@ -172,9 +178,9 @@ function ResponsiveDrawer(props) {
             </div>
             <Divider />
             <List>
-                {['settings', 'customize', 'djf', 'sdf'].map((text, index) => (
+                {['TODO', 'TODO', 'TODO', 'TODO'].map((text, index) => ( //settings, addPipes,Profile
                     <ListItem button key={text} component={Link} to={'/' + text}>
-                        <ListItemIcon>{index % 2 === 0 ? <BsGearFill size={30} /> : <BsPlus size={30} />}</ListItemIcon>
+                        <ListItemIcon>{icons[index]}</ListItemIcon>
                         <ListItemText primary={text} />
                     </ListItem>
                 ))}
@@ -192,10 +198,6 @@ function ResponsiveDrawer(props) {
                 >
                     <GoSignOut />
                 </IconButton>
-                <Typography variant="h6" noWrap
-                    className={classes.logoutText}>
-                    Logout
-                </Typography>
             </div>
         </div >
     );
