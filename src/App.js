@@ -15,7 +15,7 @@ export default function App() {
     const [userStore, setUserStore] = useState({
         username: '',
         color: 0,
-        isLoggedIn: true,  //
+        isLoggedIn: false,  //
         isLoading: false,
     });
     const [alert, setAlert] = useState({
@@ -24,11 +24,13 @@ export default function App() {
         message: ''
     });
     useEffect(() => {
-        const cookie = new Cookies().get('userID');
-        console.log(cookie);
-        if (cookie) {
+        const cookie = new Cookies();
+        const user = cookie.get('userID');
+        const color = cookie.get('userColor');
+        if (user) {
             setUserStore({
-                username: cookie,
+                username: user,
+                color: color,
                 isLoggedIn: true, //
                 isLoading: false,
             })
@@ -65,7 +67,7 @@ export default function App() {
 
                             ) : (
 
-                                <div style={{ height: '100vH', position: 'fixed', background: '#311d3f' }}>
+                                <div style={{ height: '100vH', position: 'fixed', background: '#53354a' }}>
                                     <Drawer />
                                 </div>
 

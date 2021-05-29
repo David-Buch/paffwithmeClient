@@ -19,10 +19,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Cookies from 'universal-cookie';
 
 const useStyles = makeStyles((theme) => ({
-
     root: {
         height: '100vh',
         width: '100vW',
+        backgroundColor: theme.palette.background.default,
     },
     errorDisplay: {
         display: 'flex',
@@ -41,11 +41,18 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.primary.main,
     },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
+    },
+    tfRoot: {
+        color: theme.palette.primary.dark,
+    },
+    tf: {
+        borderWidth: "1px",
+        borderColor: "#081C15 !important"
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
@@ -91,11 +98,13 @@ export default function SignIn() {
                     d1.setDate(new Date().getDate() + 14)
                     console.log(d1);
                     cookie.set('userID', response.username, { path: '/', expires: d1 });
+                    cookie.set('userColor', response.color, { path: '/', expires: d1 });
 
                     setUserStore({
                         username: response.username,
                         isLoggedIn: true,
-                        isLoading: true
+                        isLoading: true,
+                        color: response.color
                     });
 
                 }
@@ -131,13 +140,14 @@ export default function SignIn() {
                 <CssBaseline />
                 <div className={classes.paper}>
                     <Avatar className={classes.avatar}>
-                        <CgProfile />
+                        <CgProfile size={35} />
                     </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Log in
+                    <Typography component="h1" variant="h5" color='primary'>
+                        LogIn
         </Typography>
                     <form className={classes.form} onSubmit={formik.handleSubmit}>
                         <TextField
+                            className={classes.tfRoot}
                             variant="outlined"
                             margin="normal"
                             required
@@ -151,6 +161,7 @@ export default function SignIn() {
                             helperText={formik.touched.username && formik.errors.username}
                         />
                         <TextField
+                            className={classes.tf}
                             variant="outlined"
                             margin="normal"
                             required
@@ -178,7 +189,7 @@ export default function SignIn() {
                         </Button>
                         <Grid container>
                             <Grid item>
-                                <Link href="/signup" variant="body2">
+                                <Link href="/signup" variant="subtitle1" color='primary'>
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

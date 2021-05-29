@@ -10,7 +10,7 @@ const CustomSheet = styled(Sheet)`
     /* custom styles */
   }
   .react-modal-sheet-container {
-    background-color: #88304e !important;
+    background-color: #190061 !important;
   
   }
   .react-modal-sheet-header {    

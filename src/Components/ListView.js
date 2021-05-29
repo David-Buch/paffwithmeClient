@@ -23,31 +23,11 @@ export default function ListView(props) {
         hasMore: true
     });
 
-    //useEffect data fetching 
-
-    const handleInfiniteOnLoad = () => {
-        let { data } = state;
-        this.setState({
-            ...state,
-            loading: true,
-        });
-        if (data.length > 14) {
-            console.log('Infinite List loaded all');
-            setState({
-                hasMore: false,
-                loading: false,
-            });
-            return;
-        }
-        //fetching data
-    };
-
     return (
         <div className={classes.listRoot}>
             <InfiniteScroll
                 initialLoad={false}
                 pageStart={0}
-                //loadMore={handleInfiniteOnLoad}
                 hasMore={state.loading && state.hasMore}
                 useWindow={false}
             >

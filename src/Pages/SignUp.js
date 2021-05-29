@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         height: '100vh',
         width: '100vW',
+        backgroundColor: theme.palette.background.default,
     },
     errorDisplay: {
         display: 'flex',
@@ -32,14 +33,14 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
     },
     paper: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(3),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.primary.main,
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -95,7 +96,8 @@ export default function SignUp() {
                     setUserStore({
                         username: values.username,
                         isLoggedIn: true,
-                        isLoading: true
+                        isLoading: true,
+                        color: response.color,
                     });
                 }
                 else {
@@ -114,7 +116,7 @@ export default function SignUp() {
 
     return (
         <div className={classes.root}>
-            <IconButton aria-label="back" color='primary'
+            <IconButton aria-label="back" color='secondary'
                 onClick={() => { history.push('/') }}>
                 <BiLeftArrowAlt size={40} />
             </IconButton>
@@ -130,9 +132,9 @@ export default function SignUp() {
                 <CssBaseline />
                 <div className={classes.paper}>
                     <Avatar className={classes.avatar}>
-                        <CgProfile />
+                        <CgProfile size={35} />
                     </Avatar>
-                    <Typography component="h1" variant="h5">
+                    <Typography component="h1" variant="h5" color='primary'>
                         Sign Up
         </Typography>
                     <form className={classes.form} onSubmit={formik.handleSubmit}>

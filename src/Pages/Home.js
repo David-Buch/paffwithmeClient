@@ -82,7 +82,7 @@ export default function Home() {
                             <div className={classes.bottomHalf}>
                                 <Button
                                     variant="contained"
-                                    color="secondary"
+                                    color="primary"
                                     className={classes.button}
                                     startIcon={
                                         <img className={classes.pipeIcon} src='img/pipe-icon.png' alt='pipeIcon' height={80} width={80} />

@@ -52,7 +52,7 @@ export default function OMWDialog(props) {
         sendPushtoOne(
             userStore.username, omwData.to, timeToAdd
         ).then((res) => { console.log(res.data); });
-        sendSmokeData(userStore.username, location, startTime, endTime)
+        sendSmokeData(userStore.username, location, startTime, endTime, userStore.color)
             .then((res) => {
                 if (res.success) {
                     setAlert({ isAlert: true, status: 'success', message: 'Push was send! Enjoy your pipe!' });
@@ -92,7 +92,7 @@ export default function OMWDialog(props) {
     }
     return (
         <Dialog open={props.open} aria-labelledby="Title">
-            <DialogTitle id="form-dialog-title">Smoke away!</DialogTitle>
+            <DialogTitle id="form-dialog-title" color='white'>Smoke away!</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     How long will it take you to join the smoke session?

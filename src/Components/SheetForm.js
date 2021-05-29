@@ -72,7 +72,7 @@ export default function SheetForm() {
         sendPushtoAll(
             userStore.username
         ).then((res) => { console.log(res.data); });
-        sendSmokeData(userStore.username, values.location, values.startTime, values.endTime)
+        sendSmokeData(userStore.username, values.location, values.startTime, values.endTime, userStore.color)
             .then((res) => {
                 if (res.success) {
                     setAlert({ isAlert: true, status: 'success', message: 'Push was send! Enjoy your pipe!' });

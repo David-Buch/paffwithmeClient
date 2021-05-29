@@ -68,10 +68,11 @@ export function getSmokeData(username) {
         });
 }
 
-export function sendSmokeData(username, location, startTime, endTime) {
+export function sendSmokeData(username, location, startTime, endTime, color) {
 
     console.log(JSON.stringify({
         username: username,
+        color: color,
         location: location,
         startTime: startTime,
         endTime: endTime
@@ -79,6 +80,7 @@ export function sendSmokeData(username, location, startTime, endTime) {
 
     return axios.post('https://paffwithme.herokuapp.com/smokingData/send', {
         username: username,
+        color: color,
         location: location,
         startTime: startTime,
         endTime: endTime

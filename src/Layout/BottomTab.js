@@ -23,14 +23,16 @@ const useStyles = makeStyles((theme) => ({
         position: 'fixed',
         left: 0,
         bottom: 0,
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.primary.light,
+        color: 'red',
         borderTopRightRadius: '15%',
         borderTopLeftRadius: '15%',
     },
     paper: {
+        backgroundColor: theme.palette.primary.light
     },
     navPoints: {
-        color: theme.palette.secondary.dark,
+        color: 'black',
     }
 }));
 

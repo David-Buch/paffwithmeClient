@@ -35,7 +35,8 @@ const useStyles = makeStyles((theme)=>({
         marginBottom: 12,
     },
     action: {
-        paddingRight: 5
+        paddingRight: 5,
+        paddingLeft:5,
     }
 
 }));
@@ -64,16 +65,16 @@ function handleOMW(){
                     </Avatar>
                 }
                 action={
-                    <div className={classes.action}>
-                        
+                    <div className={classes.action}> 
                         {console.log(props.smoking)}
                         {
                         props.smoking ? (
                             <Button
-                                variant="contained"
+                                variant="outlined"
+                                color='primary'
                                 className={classes.button}
                                 startIcon={<BiWalk />}
-                                style={{ color: 'green' }}
+                                style={{ color: 'primary' }}
                                 onClick={()=>handleOMW()}>
                                 On my Way
                             
@@ -87,7 +88,7 @@ function handleOMW(){
             <CardContent className={classes.CardContent}>
                 <Typography variant="h8" color="textSecondary">
                     <FaHourglassStart />
-                    {' Started at: ' + props.startTime}{' '}
+                    {' Started at: ' + props.startTime}
                     <FaHourglassEnd />
                     {' Ended at: ' + props.endTime}
                 </Typography>

@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
         },
+        backgroundColor: theme.palette.primary.light,
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     appBarHeader: {
-        height: '5vH'
+        height: '5vH',
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
@@ -64,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
         width: drawerWidth,
     },
     content: {
-
         flexGrow: 1,
         display: 'flex',
         flexDirection: 'column'
@@ -121,11 +121,12 @@ function ResponsiveDrawer(props) {
     };
 
     const doLogout = () => {
-        console.log('loggedOut');
         const cookie = new Cookies();
         cookie.remove('userID');
+        cookie.remove('userColor');
         history.push('/');
         setUserStore({
+            color: 0,
             username: '',
             isLoggedIn: false,
             isLoading: false
@@ -166,9 +167,9 @@ function ResponsiveDrawer(props) {
     const drawer = (
         <div>
             <div className={classes.profileArea}>
-                <Avatar alt="profileAvatar" style={colors[4]} className={classes.avatar}
+                <Avatar alt="profileAvatar" style={colors[userStore.color]} className={classes.avatar}
                     component='div'>
-                    <Typography>
+                    <Typography variant='h4'>
                         {firstLetter}
                     </Typography>
                 </Avatar>
@@ -178,7 +179,7 @@ function ResponsiveDrawer(props) {
             </div>
             <Divider />
             <List>
-                {['TODO', 'TODO', 'TODO', 'TODO'].map((text, index) => ( //settings, addPipes,Profile
+                {['TODO', 'TODO1', 'TODO2', 'TODO3'].map((text, index) => ( //settings, addPipes,Profile
                     <ListItem button key={text} component={Link} to={'/' + text}>
                         <ListItemIcon>{icons[index]}</ListItemIcon>
                         <ListItemText primary={text} />
@@ -209,7 +210,7 @@ function ResponsiveDrawer(props) {
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
                     <IconButton
-                        color="inherit"
+                        color="black"
                         aria-label="open drawer"
                         edge="start"
                         onClick={handleDrawerToggle}
