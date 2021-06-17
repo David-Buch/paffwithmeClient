@@ -36,6 +36,7 @@ export default function ListView(props) {
                     dataSource={props.data}
                     renderItem={user => (
                         <CustomCard
+                            live={props.live}
                             smoking={user.currentlySmoking}
                             title={user.username}
                             subheader={user.day}

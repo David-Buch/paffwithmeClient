@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import CustomButton from '../Components/CustomButton';
 import Button from '@material-ui/core/Button';
@@ -6,7 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import './pages.css';
 import BottomSheet from '../Components/BottomSheet';
-import { BottomSheetContext, SmokingContext } from '../Data/Contexts';
+import { BottomSheetContext, UserContext, AlertContext } from '../Data/Contexts';
+import { getLive } from '../Helpers/Api';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,8 +31,27 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
     const classes = useStyles();
-    const { isSmoking } = useContext(SmokingContext);
+    const [isSmoking, setSmoking] = useState(false);
     const [isBsOpen, setBsOpen] = useState(false);
+    const [isLoading, setLoading] = useState(false);
+    const { userStore } = useContext(UserContext);
+    const { setAlert } = useContext(AlertContext);
+
+    useEffect(() => {
+        setLoading(true);
+        getLive(userStore.username).then((res) => {
+            setLoading(false);
+            if (res.success) {
+                console.log(res);
+                setSmoking(res.currentlySmoking);
+            }
+            else {
+                if (res.message) { setAlert({ isAlert: true, status: 'warning', message: res.message }) }
+                else { setAlert({ isAlert: true, status: 'error', message: res.error }) }
+            }
+        })
+
+    }, [])
 
     return (
 
@@ -88,9 +109,13 @@ export default function Home() {
                                         <img className={classes.pipeIcon} src='img/pipe-icon.png' alt='pipeIcon' height={80} width={80} />
                                     }
                                     onClick={() => setBsOpen(true)}
+                                    disabled={isLoading}
                                 >
-                                    Enjoy a Pipe!
-                        </Button>
+                                    {!isLoading ?
+                                        (<>Enjoy a Pipe!</>) : (<CircularProgress />)
+                                    }
+
+                                </Button>
 
                             </div>
                         )}

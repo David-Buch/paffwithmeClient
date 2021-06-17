@@ -9,7 +9,6 @@ import { colors } from './Colors';
 const useStyles = makeStyles((theme) => ({
     storyRoot: {
         display: 'flex',
-        flexDirection: 'row',
     },
     story: {
         display: 'flex',
@@ -25,8 +24,14 @@ export default function Stories(props) {
     return (
         <div className={classes.storyRoot}>
             <List
-                itemLayout='vertical'
+                //itemLayout='horizontal'
+                grid={
+                    {
+                        gutter: 16,
+                    }
+                }
                 size='small'
+
                 dataSource={props.data}
                 renderItem={item => (
                     <div>
@@ -38,13 +43,13 @@ export default function Stories(props) {
                                         <Avatar alt="profileAvatar"
                                             component='div'
                                             style={colors[item.color]}>
-                                            <Typography variant="h4">
+                                            <Typography variant="h4" color='textSecondary'>
                                                 {item.username.charAt(0).toUpperCase()}
                                             </Typography>
                                         </Avatar>
                                     </Box>
                                 </IconButton>
-                                <Typography variant="h6">
+                                <Typography variant="h6" color='textPrimary'>
                                     {item.username}
                                 </Typography>
 

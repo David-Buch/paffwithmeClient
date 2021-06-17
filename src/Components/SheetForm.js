@@ -1,17 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 //import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { HiLocationMarker } from "react-icons/hi";
+import { HiLocationMarker, HiOutlineCamera } from "react-icons/hi";
 import { BiSend } from 'react-icons/bi';
 
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { sendPushtoAll, sendSmokeData } from '../Helpers/Api';
-import { SmokingContext, AlertContext, BottomSheetContext, UserContext } from '../Data/Contexts';
+import { sendPushtoAll, sendSmokeData, uploadFile } from '../Helpers/Api';
+import { AlertContext, BottomSheetContext, UserContext } from '../Data/Contexts';
+import Cam from './Cam';
+
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -40,6 +42,10 @@ const useStyles = makeStyles((theme) => ({
     },
     grid: {
         marginTop: theme.spacing(3),
+    },
+    notchedOutline: {
+        borderWidth: "1px",
+        borderColor: "white !important"
     }
 
 }));
@@ -62,13 +68,12 @@ export default function SheetForm() {
     const { userStore } = useContext(UserContext);
     const { setAlert } = useContext(AlertContext);
     const { setBsOpen } = useContext(BottomSheetContext);
-    const { setSmoking } = useContext(SmokingContext);
+    const [img, setImg] = useState(null);
     let currentHours = ('0' + new Date().getHours()).substr(-2);
     let currentMin = ('0' + Math.ceil(new Date().getMinutes() / 5) * 5).substr(-2);
-
     let currentTime = currentHours.concat(':', currentMin);
 
-    const send = (values, smokingDuration) => {
+    const send = (values) => {
         sendPushtoAll(
             userStore.username
         ).then((res) => { console.log(res.data); });
@@ -76,15 +81,24 @@ export default function SheetForm() {
             .then((res) => {
                 if (res.success) {
                     setAlert({ isAlert: true, status: 'success', message: 'Push was send! Enjoy your pipe!' });
-                    setSmoking(true);
-                    console.log(smokingDuration);
-                    setTimeout(() => { setSmoking(false) }, smokingDuration * 1000);
                 }
                 else {
                     if (res.message) { setAlert({ isAlert: true, status: 'waring', message: res.message }) }
                     else { setAlert({ isAlert: true, status: 'error', message: res.error }) }
                 }
             })
+        if (img != null) {
+            uploadFile(img, userStore.username).then((res) => {
+                if (res.success) {
+                    console.log('worked');
+                }
+                else {
+                    if (res.message) { setAlert({ isAlert: true, status: 'waring', message: res.message }) }
+                    else { setAlert({ isAlert: true, status: 'error', message: res.error }) }
+                }
+            });
+        }
+
     }
 
     const formik = useFormik({
@@ -96,22 +110,14 @@ export default function SheetForm() {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             setBsOpen(false);
-            const smokingDuration = getDuration(values.startTime, values.endTime);
-            send(values, smokingDuration);
+            send(values);
         }
     })
-    function getDuration(startTime, endTime) {
-        var duration =
-            (endTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60) -
-            (startTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60);
-        if (duration <= 0) {
-            duration =
-                (endTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60) -
-                (startTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60) + (24 * 60 * 60);
-
-        }
-        return duration;
-    }
+    const handleImageChange = (event) => {
+        setImg(
+            URL.createObjectURL(event.target.files[0])
+        );
+    };
 
     return (
         <div>
@@ -132,7 +138,6 @@ export default function SheetForm() {
                             <TextField
                                 className={classes.textField}
                                 id="startTime"
-                                color='secondary'
                                 label="Starting Time"
                                 variant='outlined'
                                 type="time"
@@ -142,15 +147,24 @@ export default function SheetForm() {
                                 helperText={formik.touched.startTime && formik.errors.startTime}
                                 InputLabelProps={{
                                     shrink: true,
+                                    style: { color: 'white' }
                                 }}
                                 inputProps={{
                                     step: 300, // 5 min
+                                    style: { color: 'white' }
+
                                 }}
+                                InputProps={{
+                                    classes: {
+                                        notchedOutline: classes.notchedOutline
+                                    }
+                                }}
+
                             />
                             <TextField
                                 className={classes.textField}
                                 id="endTime"
-                                color='secondary'
+
                                 label="Ending Time"
                                 variant='outlined'
                                 type="time"
@@ -160,9 +174,16 @@ export default function SheetForm() {
                                 helperText={formik.touched.endTime && formik.errors.endTime}
                                 InputLabelProps={{
                                     shrink: true,
+                                    style: { color: 'white' }
                                 }}
                                 inputProps={{
                                     step: 300, // 5 min
+                                    style: { color: 'white' }
+                                }}
+                                InputProps={{
+                                    classes: {
+                                        notchedOutline: classes.notchedOutline
+                                    }
                                 }}
                             />
                         </div>
@@ -172,7 +193,7 @@ export default function SheetForm() {
                             className={classes.location}
                             id="location"
                             variant='outlined'
-                            color='secondary'
+
                             label="Location"
                             type='text'
                             placeholder='Your Location'
@@ -186,9 +207,24 @@ export default function SheetForm() {
                                         <HiLocationMarker />
                                     </InputAdornment>
                                 ),
+                                classes: {
+                                    notchedOutline: classes.notchedOutline
+                                }
+                            }}
+                            InputLabelProps={{
+                                shrink: true,
+                                style: { color: 'white' }
+                            }}
+                            inputProps={{
+                                style: { color: 'white' }
                             }}
 
+
                         />
+                    </Grid>
+                    <Grid item xs={12}>
+
+                        <Cam onChange={handleImageChange} />
                     </Grid>
                     <Grid item xs={12}>
                         <div className={classes.buttonDiv}>
@@ -200,7 +236,7 @@ export default function SheetForm() {
                                 endIcon={<BiSend />}
                             >
                                 Send
-                  </Button>
+                            </Button>
                         </div>
                     </Grid>
                 </Grid>

@@ -181,8 +181,8 @@ function ResponsiveDrawer(props) {
             <List>
                 {['TODO', 'TODO1', 'TODO2', 'TODO3'].map((text, index) => ( //settings, addPipes,Profile
                     <ListItem button key={text} component={Link} to={'/' + text}>
-                        <ListItemIcon>{icons[index]}</ListItemIcon>
-                        <ListItemText primary={text} />
+                        <ListItemIcon >{icons[index]}</ListItemIcon>
+                        <ListItemText color='textSecondary' primary={text} />
                     </ListItem>
                 ))}
             </List>

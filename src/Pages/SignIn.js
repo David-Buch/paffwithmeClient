@@ -57,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    notchedOutline: {
+        borderWidth: "1px",
+        borderColor: "white !important"
+    }
 }));
 
 const validationSchema = Yup.object({
@@ -159,6 +163,18 @@ export default function SignIn() {
                             onChange={formik.handleChange}
                             error={formik.touched.username && Boolean(formik.errors.username)}
                             helperText={formik.touched.username && formik.errors.username}
+                            InputLabelProps={{
+                                shrink: true,
+                                style: { color: 'white' }
+                            }}
+                            inputProps={{
+                                style: { color: 'white' }
+                            }}
+                            InputProps={{
+                                classes: {
+                                    notchedOutline: classes.notchedOutline
+                                }
+                            }}
                         />
                         <TextField
                             className={classes.tf}
@@ -174,6 +190,18 @@ export default function SignIn() {
                             onChange={formik.handleChange}
                             error={formik.touched.password && Boolean(formik.errors.password)}
                             helperText={formik.touched.password && formik.errors.password}
+                            InputLabelProps={{
+                                shrink: true,
+                                style: { color: 'white' }
+                            }}
+                            inputProps={{
+                                style: { color: 'white' }
+                            }}
+                            InputProps={{
+                                classes: {
+                                    notchedOutline: classes.notchedOutline
+                                }
+                            }}
                         />
                         <Button
                             type="submit"

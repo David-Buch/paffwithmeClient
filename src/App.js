@@ -10,6 +10,8 @@ import SignUp from './Pages/SignUp';
 import Loading from './Pages/Loading';
 import { getUser } from './Helpers/Api';
 import Cookies from 'universal-cookie';
+import Cam from './Components/Cam';
+
 
 export default function App() {
     const [userStore, setUserStore] = useState({
@@ -23,6 +25,8 @@ export default function App() {
         status: '', //error,success,warning, info
         message: ''
     });
+    const [img, setImg] = useState(null);
+
     useEffect(() => {
         const cookie = new Cookies();
         const user = cookie.get('userID');
@@ -51,7 +55,8 @@ export default function App() {
         
                 });
                 */
-    }, [])
+    }, []);
+
     return (
         <UserContext.Provider value={{ userStore, setUserStore }}>
             <AlertContext.Provider value={{ alert, setAlert }}>

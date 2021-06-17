@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import moment from 'moment';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -11,8 +12,8 @@ import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import { BiTime } from 'react-icons/bi'
-import { AlertContext, OMWContext, SmokingContext, UserContext } from '../Data/Contexts';
-import { sendPushtoAll, sendPushtoOne, sendSmokeData } from '../Helpers/Api';
+import { AlertContext, OMWContext, UserContext } from '../Data/Contexts';
+import { sendPushtoOne, sendSmokeData } from '../Helpers/Api';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +25,6 @@ export default function OMWDialog(props) {
     const { userStore } = useContext(UserContext);
     const { omwData, setOmwData } = useContext(OMWContext);
     const { setAlert } = useContext(AlertContext);
-    const { setSmoking } = useContext(SmokingContext);
     const [value, setValue] = React.useState(5);
 
     const handleSliderChange = (event, newValue) => {
@@ -41,27 +41,16 @@ export default function OMWDialog(props) {
         }
     };
     const addTime = (time, timeToAdd) => {
-        var timeInt;
-        timeInt = (time.split(':').reduce((acc, time1) => (60 * acc) + +time1)) + timeToAdd;
-        var m = timeInt % 60;
-        var h = (timeInt - m) / 60;
-        return (('0' + h.toString()).substr(-2) + ":"
-            + (m < 10 ? "0" : "") + ('0' + m.toString()).substr(-2));
+        return moment(time).add(timeToAdd, 'minutes').format('HH:mm');
     }
-    const send = (location, startTime, endTime, smokingDuration, timeToAdd) => {
+    const send = (location, startTime, endTime, timeToAdd) => {
         sendPushtoOne(
             userStore.username, omwData.to, timeToAdd
         ).then((res) => { console.log(res.data); });
         sendSmokeData(userStore.username, location, startTime, endTime, userStore.color)
             .then((res) => {
                 if (res.success) {
-                    setAlert({ isAlert: true, status: 'success', message: 'Push was send! Enjoy your pipe!' });
-                    setTimeout(() => {
-                        setSmoking(true);
-                        setTimeout(() => {
-                            setSmoking(false)
-                        }, (smokingDuration + (timeToAdd * 60)) * 1000);
-                    }, timeToAdd * 60 * 1000)
+                    setAlert({ isAlert: true, status: 'success', message: 'Enjoy your pipe!' });
                 }
                 else {
                     if (res.message) { setAlert({ isAlert: true, status: 'waring', message: res.message }) }
@@ -69,38 +58,24 @@ export default function OMWDialog(props) {
                 }
             })
     }
-    function getDuration(startTime, endTime) {
-        var duration =
-            (endTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60) -
-            (startTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60);
-        if (duration <= 0) {
-            duration =
-                (endTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60) -
-                (startTime.split(':').reduce((acc, time) => (60 * acc) + +time) * 60) + (24 * 60 * 60);
-
-        }
-        return duration;
-    }
 
     function handleSubmit() {
-        const endTime = addTime(omwData.endTime, value);
-        const startTime = addTime(omwData.startTime, value);
-        const smokingDuration = getDuration(startTime, endTime);
-        send(omwData.location, startTime, endTime, smokingDuration, value);
+        const endTime = addTime(moment(omwData.endTime, 'HH:mm'), value);
+        const startTime = addTime(moment(omwData.startTime, 'HH:mm'), value);
+        send(omwData.location, startTime, endTime, value);
         setOmwData({ ...omwData, isOpen: false });
-
     }
     return (
         <Dialog open={props.open} aria-labelledby="Title">
-            <DialogTitle id="form-dialog-title" color='white'>Smoke away!</DialogTitle>
+            <DialogTitle id="form-dialog-title" color='textPrimary' >Smoke away!</DialogTitle>
             <DialogContent>
-                <DialogContentText>
+                <DialogContentText color='textPrimary'>
                     How long will it take you to join the smoke session?
-          </DialogContentText>
+                </DialogContentText>
                 <div className={classes.root}>
                     <Typography id="input-slider" gutterBottom>
                         Minutes
-      </Typography>
+                    </Typography>
                     <Grid container spacing={2} alignItems="center">
                         <Grid item>
                             <BiTime size={20} />
@@ -144,7 +119,7 @@ export default function OMWDialog(props) {
                     color="primary"
                     className={classes.button}>
                     Cancel
-          </Button>
+                </Button>
                 <Button
                     variant="contained"
                     color="primary"
@@ -152,8 +127,9 @@ export default function OMWDialog(props) {
                     onClick={handleSubmit}
                 >
                     Send
-          </Button>
+                </Button>
             </DialogActions>
         </Dialog>
     )
 }
+

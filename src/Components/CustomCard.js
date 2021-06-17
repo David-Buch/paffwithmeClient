@@ -75,24 +75,26 @@ function handleOMW(){
                                 className={classes.button}
                                 startIcon={<BiWalk />}
                                 style={{ color: 'primary' }}
-                                onClick={()=>handleOMW()}>
+                                onClick={()=>handleOMW()}
+                                disabled={props.live}>
                                 On my Way
                             
                             </Button>) : (
                             <>TO DO</>
                         )}
                     </div>}
+
                 title={props.title}
-                subheader={props.subheader}
+                subheader={<Typography>{props.subheader}</Typography>}
             />
             <CardContent className={classes.CardContent}>
-                <Typography variant="h8" color="textSecondary">
+                <Typography variant="h8" >
                     <FaHourglassStart />
                     {' Started at: ' + props.startTime}
                     <FaHourglassEnd />
                     {' Ended at: ' + props.endTime}
                 </Typography>
-                <Typography variant="h8" component="p">
+                <Typography variant="h8" component="p" >
                     <HiLocationMarker size={20} />
                     {' Location: ' + props.location}
                 </Typography>

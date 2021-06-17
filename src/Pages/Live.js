@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import ListView from '../Components/ListView';
 import Stories from '../Components/Stories';
 import { AlertContext, OMWContext, UserContext } from '../Data/Contexts';
-import { getSmokeData } from '../Helpers/Api';
+import { getLive, getSmokeData } from '../Helpers/Api';
 import OMWDialog from '../Components/OMWDialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Live() {
     const classes = useStyles();
+    const [isSmoking, setSmoking] = useState(false);
     const [data, setData] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const [omwData, setOmwData] = useState({
@@ -57,6 +58,12 @@ export default function Live() {
                 else { setAlert({ isAlert: true, status: 'error', message: res.error }) }
             }
         })
+        getLive(userStore.username).then((res) => {
+            if (res.success) { setSmoking(res.currentlySmoking); }
+            else {
+                if (res.message) { setAlert({ isAlert: true, status: 'warning', message: res.message }) }
+            }
+        })
     }, []);
     return (
         <OMWContext.Provider value={{ omwData, setOmwData }}>
@@ -67,7 +74,9 @@ export default function Live() {
                 </div>
                 <div className={classes.listView}>
                     {isLoading ? (<CircularProgress />) : (
-                        <ListView data={data} />)}
+                        <ListView
+                            data={data}
+                            live={isSmoking} />)}
                 </div>
                 <OMWDialog
                     open={omwData.isOpen}

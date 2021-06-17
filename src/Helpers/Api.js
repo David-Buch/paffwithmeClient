@@ -69,14 +69,14 @@ export function getSmokeData(username) {
 }
 
 export function sendSmokeData(username, location, startTime, endTime, color) {
-
     console.log(JSON.stringify({
         username: username,
         color: color,
         location: location,
         startTime: startTime,
         endTime: endTime
-    }));
+    }
+    ));
 
     return axios.post('https://paffwithme.herokuapp.com/smokingData/send', {
         username: username,
@@ -109,3 +109,23 @@ export function UserlogOut(username) {
             return error;
         });
 }
+export function getLive(username) {
+    return axios.post('https://paffwithme.herokuapp.com/smokingData/getLive', {
+        username: username
+    })
+        .then(res => res.data)
+        .catch((err) => {
+            console.log(err);
+            throw new Error(err);
+        });
+}
+export function uploadFile(file, username) {
+    let formData = new FormData();
+    formData.append("file", file);
+    formData.append("name", username);
+    console.log(formData);
+    return axios.post('https://paffwithme.herokuapp.com/stories/upload', formData
+        , { headers: { "Content-Type": "multipart/form-data", } });
+}
+
+
