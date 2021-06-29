@@ -125,12 +125,12 @@ export function uploadFile(file, username) {
     formData.append("storie", file, username);
     formData.append("name", username);
     console.log(formData);
-    return axios.post('http://localhost:3003/stories/upload', formData //https://paffwithme.herokuapp.com/stories/upload
+    return axios.post('https://paffwithme.herokuapp.com/stories/upload', formData //https://paffwithme.herokuapp.com/stories/upload
         , { headers: { "Content-Type": "multipart/form-data", } });
 }
 
 export function getFile(username) {
-    return axios.post('http://localhost:3003/stories/get', {
+    return axios.post('https://paffwithme.herokuapp.com/stories/get', { //http://localhost:3003/stories/get
         username: username
     }, { responseType: 'blob' })
         .then((res) => {
