@@ -4,8 +4,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import ListView from '../Components/ListView';
 import Stories from '../Components/Stories';
 import { AlertContext, OMWContext, UserContext } from '../Data/Contexts';
-import { getLive, getSmokeData } from '../Helpers/Api';
+import { getFile, getLive, getSmokeData } from '../Helpers/Api';
 import OMWDialog from '../Components/OMWDialog';
+import StoriePopUp from '../Components/StoriePopUp';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Live() {
     const classes = useStyles();
+    const [img, setImg] = useState([]);
+    const [isPopUp, setPopUp] = useState(false);
     const [isSmoking, setSmoking] = useState(false);
     const [data, setData] = useState([]);
     const [isLoading, setLoading] = useState(false);
@@ -65,12 +68,29 @@ export default function Live() {
             }
         })
     }, []);
+    const handleStorie = () => {
+
+        getFile(userStore.username).then((res) => {
+            console.log(res);
+            if (res instanceof Blob) {
+                console.log('2');
+                console.log(res);
+                setImg([URL.createObjectURL(res)]);
+                setPopUp(true);
+            }
+            else {
+                setAlert({ isAlert: true, status: 'warning', message: res.message })
+
+            }
+        })
+    }
+
     return (
         <OMWContext.Provider value={{ omwData, setOmwData }}>
             <div className={classes.root}>
                 <div className={classes.storys}>
                     {isLoading ? (<CircularProgress />) : (
-                        <Stories data={data} />)}
+                        <Stories data={data} onClick={handleStorie} />)}
                 </div>
                 <div className={classes.listView}>
                     {isLoading ? (<CircularProgress />) : (
@@ -83,6 +103,7 @@ export default function Live() {
 
                 />
             </div>
+            <StoriePopUp open={isPopUp} stories={img} onAllStoriesEnd={() => setPopUp(false)} />
         </OMWContext.Provider>
     );
 }

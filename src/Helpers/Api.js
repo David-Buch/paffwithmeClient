@@ -1,4 +1,5 @@
 import axios from 'axios';
+var fileDownload = require('js-file-download');
 
 export function sendPushtoAll(pushUsername) {
     return axios.post('https://paffwithme.herokuapp.com/notification/sendtoAll', {
@@ -121,11 +122,48 @@ export function getLive(username) {
 }
 export function uploadFile(file, username) {
     let formData = new FormData();
-    formData.append("file", file);
+    formData.append("storie", file, username);
     formData.append("name", username);
     console.log(formData);
-    return axios.post('https://paffwithme.herokuapp.com/stories/upload', formData
+    return axios.post('http://localhost:3003/stories/upload', formData //https://paffwithme.herokuapp.com/stories/upload
         , { headers: { "Content-Type": "multipart/form-data", } });
+}
+
+export function getFile(username) {
+    return axios.post('http://localhost:3003/stories/get', {
+        username: username
+    }, { responseType: 'blob' })
+        .then((res) => {
+            console.log(res);
+            if (res.data.type.toLowerCase().indexOf('json') != -1) {
+                console.log('hi');
+                return new Promise((resolve, reject) => {
+                    let reader = new FileReader();
+                    reader.onload = () => {
+                        res.data = JSON.parse(reader.result);
+                        console.log(res.data);
+                        resolve(res.data);
+
+                    };
+                    reader.onerror = () => {
+                        reject(res);
+                    };
+                    reader.readAsText(res.data);
+                }).then((data) => {
+                    console.log()
+                    return data;
+                })
+            } else {
+                console.log(res);
+                console.log(res.data);
+                return res.data;
+            }
+
+        })
+        .catch((err) => {
+            console.log(err);
+            throw new Error(err);
+        });
 }
 
 

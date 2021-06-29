@@ -74,6 +74,7 @@ export default function SheetForm() {
     let currentTime = currentHours.concat(':', currentMin);
 
     const send = (values) => {
+        /*
         sendPushtoAll(
             userStore.username
         ).then((res) => { console.log(res.data); });
@@ -87,6 +88,7 @@ export default function SheetForm() {
                     else { setAlert({ isAlert: true, status: 'error', message: res.error }) }
                 }
             })
+            */
         if (img != null) {
             uploadFile(img, userStore.username).then((res) => {
                 if (res.success) {
@@ -115,7 +117,8 @@ export default function SheetForm() {
     })
     const handleImageChange = (event) => {
         setImg(
-            URL.createObjectURL(event.target.files[0])
+            //URL.createObjectURL(
+            event.target.files[0]
         );
     };
 
@@ -223,7 +226,6 @@ export default function SheetForm() {
                         />
                     </Grid>
                     <Grid item xs={12}>
-
                         <Cam onChange={handleImageChange} />
                     </Grid>
                     <Grid item xs={12}>
