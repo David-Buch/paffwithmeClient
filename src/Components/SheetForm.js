@@ -74,6 +74,7 @@ export default function SheetForm() {
     let currentTime = currentHours.concat(':', currentMin);
 
     const send = (values) => {
+
         sendPushtoAll(
             userStore.username
         ).then((res) => { console.log(res.data); });
@@ -87,6 +88,7 @@ export default function SheetForm() {
                     else { setAlert({ isAlert: true, status: 'error', message: res.error }) }
                 }
             })
+
         if (img != null) {
             uploadFile(img, userStore.username).then((res) => {
                 if (res.success) {

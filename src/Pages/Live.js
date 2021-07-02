@@ -68,9 +68,8 @@ export default function Live() {
             }
         })
     }, []);
-    const handleStorie = () => {
-
-        getFile(userStore.username).then((res) => {
+    const handleStorie = (user) => {
+        getFile(user).then((res) => {
             console.log(res);
             if (res instanceof Blob) {
                 console.log('2');
@@ -90,7 +89,9 @@ export default function Live() {
             <div className={classes.root}>
                 <div className={classes.storys}>
                     {isLoading ? (<CircularProgress />) : (
-                        <Stories data={data} onClick={handleStorie} />)}
+                        <Stories
+                            data={data}
+                            onClick={handleStorie} />)}
                 </div>
                 <div className={classes.listView}>
                     {isLoading ? (<CircularProgress />) : (
