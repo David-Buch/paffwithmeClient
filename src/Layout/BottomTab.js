@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         position: 'fixed',
         left: 0,
         bottom: 0,
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.secondary.light,
         color: 'red',
         borderTopRightRadius: '15%',
         borderTopLeftRadius: '15%',

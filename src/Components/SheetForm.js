@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     },
     notchedOutline: {
         borderWidth: "1px",
-        borderColor: "white !important"
+        borderColor: "black !important"
     }
 
 }));
@@ -150,11 +150,10 @@ export default function SheetForm() {
                                 helperText={formik.touched.startTime && formik.errors.startTime}
                                 InputLabelProps={{
                                     shrink: true,
-                                    style: { color: 'white' }
+
                                 }}
                                 inputProps={{
                                     step: 300, // 5 min
-                                    style: { color: 'white' }
 
                                 }}
                                 InputProps={{
@@ -196,7 +195,6 @@ export default function SheetForm() {
                             className={classes.location}
                             id="location"
                             variant='outlined'
-
                             label="Location"
                             type='text'
                             placeholder='Your Location'
@@ -233,7 +231,7 @@ export default function SheetForm() {
                             <Button
                                 type="submit"
                                 variant="contained"
-                                color="primary"
+                                color="secondary"
                                 className={classes.button}
                                 endIcon={<BiSend />}
                             >

@@ -26,7 +26,7 @@ function Cam(props) {
                     type="file"
                     onChange={props.onChange} />
                 <Button variant="contained" component="span"
-                    color="primary"
+                    color="secondary"
                     className={classes.button}
                     endIcon={<HiOutlineCamera />}>
                     Upload

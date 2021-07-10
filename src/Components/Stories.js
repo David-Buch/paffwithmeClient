@@ -39,10 +39,10 @@ export default function Stories(props) {
                 dataSource={props.data}
                 renderItem={item => (
                     <div>
-                        {item.currentlySmoking ? (
+                        {!item.currentlySmoking ? ( // change later !!!!!
                             <div className={classes.story}>
                                 <IconButton onClick={() => props.onClick(item.username)}>
-                                    <Box border={3} color='white'
+                                    <Box border={3} color='#F27450'
                                         borderRadius="50%">
                                         <Avatar alt="profileAvatar"
                                             component='div'

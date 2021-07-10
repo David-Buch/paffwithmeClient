@@ -1,4 +1,4 @@
-import React, { useContext} from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,7 +8,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
 
 import { CgProfile } from 'react-icons/cg';
-import { BiWalk} from 'react-icons/bi';
+import { BiWalk } from 'react-icons/bi';
 import { HiLocationMarker } from 'react-icons/hi';
 import { FaHourglassStart, FaHourglassEnd } from 'react-icons/fa'
 import { OMWContext } from '../Data/Contexts';
@@ -19,13 +19,16 @@ import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
 import { colors } from './Colors';
 
-const useStyles = makeStyles((theme)=>({
-    
+const useStyles = makeStyles((theme) => ({
+
     cardRoot: {
+        //backgroundColor: theme.palette.secondary.main,
         borderRadius: '10%',
+        border: 5,
+        borderColor: theme.palette.primary.main,
         marginBottom: 10,
     },
-    avatar:{
+    avatar: {
 
     },
     title: {
@@ -36,52 +39,52 @@ const useStyles = makeStyles((theme)=>({
     },
     action: {
         paddingRight: 5,
-        paddingLeft:5,
+        paddingLeft: 5,
     }
 
 }));
 
 export default function OutlinedCard(props) {
     const classes = useStyles();
-    const {setOmwData}=useContext(OMWContext);
-    
-function handleOMW(){
-    setOmwData({
-        isOpen:true,
-        to:props.title,
-        startTime:props.startTime,
-        endTime:props.endTime,
-        location:props.location
-    });
-}
+    const { setOmwData } = useContext(OMWContext);
+
+    function handleOMW() {
+        setOmwData({
+            isOpen: true,
+            to: props.title,
+            startTime: props.startTime,
+            endTime: props.endTime,
+            location: props.location
+        });
+    }
     return (
         <Card className={classes.cardRoot} variant="elevation">
             <CardHeader
                 className={classes.cardHeader}
                 avatar={
                     <Avatar aria-label="recipe" style={colors[props.color]}
-                    className={classes.avatar}>
+                        className={classes.avatar}>
                         {props.title.charAt(0).toUpperCase()}
                     </Avatar>
                 }
                 action={
-                    <div className={classes.action}> 
+                    <div className={classes.action}>
                         {console.log(props.smoking)}
                         {
-                        props.smoking ? (
-                            <Button
-                                variant="outlined"
-                                color='primary'
-                                className={classes.button}
-                                startIcon={<BiWalk />}
-                                style={{ color: 'primary' }}
-                                onClick={()=>handleOMW()}
-                                disabled={props.live}>
-                                On my Way
-                            
-                            </Button>) : (
-                            <>TO DO</>
-                        )}
+                            !props.smoking ? ( //change later !!!!
+                                <Button
+                                    variant="outlined"
+                                    color='primary'
+                                    className={classes.button}
+                                    startIcon={<BiWalk />}
+                                    style={{ color: 'primary' }}
+                                    onClick={() => handleOMW()}
+                                    disabled={props.live}>
+                                    On my Way
+
+                                </Button>) : (
+                                <>TO DO</>
+                            )}
                     </div>}
 
                 title={props.title}
@@ -100,6 +103,6 @@ function handleOMW(){
                 </Typography>
             </CardContent>
         </Card>
-        
+
     );
 }

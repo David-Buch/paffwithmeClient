@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
         },
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.secondary.light,
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
-        backgroundColor: theme.palette.secondary.dark,
+        backgroundColor: theme.palette.background.default,
         width: drawerWidth,
     },
     content: {

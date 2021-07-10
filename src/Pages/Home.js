@@ -97,13 +97,13 @@ export default function Home() {
                                 className={classes.gif} />
                             <Typography>
                                 Gut Paff!
-                                </Typography>
+                            </Typography>
                         </div>) :
                         (
                             <div className={classes.bottomHalf}>
                                 <Button
                                     variant="contained"
-                                    color="primary"
+                                    color="secondary"
                                     className={classes.button}
                                     startIcon={
                                         <img className={classes.pipeIcon} src='img/pipe-icon.png' alt='pipeIcon' height={80} width={80} />

@@ -17,6 +17,7 @@ import { useFormik } from 'formik';
 import { loginUser } from '../Helpers/Api';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Cookies from 'universal-cookie';
+import { Box } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,9 +41,16 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     avatar: {
-        margin: theme.spacing(1),
+        margin: theme.spacing(1.5),
+        height: theme.spacing(15),
+        width: theme.spacing(15),
         backgroundColor: theme.palette.primary.main,
     },
+    logo: {
+        height: '100%',
+        width: '100%',
+    },
+
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
@@ -55,11 +63,12 @@ const useStyles = makeStyles((theme) => ({
         borderColor: "#081C15 !important"
     },
     submit: {
+        height: theme.spacing(7),
         margin: theme.spacing(3, 0, 2),
     },
     notchedOutline: {
-        borderWidth: "1px",
-        borderColor: "white !important"
+        borderWidth: "3px",
+
     }
 }));
 
@@ -142,13 +151,16 @@ export default function SignIn() {
             </div>
             <Container component="main" maxWidth="xs" className={classes.SignInRoot}>
                 <CssBaseline />
+
                 <div className={classes.paper}>
+                    <Typography component="header" variant='h3'>
+                        Paff with me!
+                    </Typography>
+
                     <Avatar className={classes.avatar}>
-                        <CgProfile size={35} />
+                        <img src='img/RPRlogo.jpg' alt='rprLogo' className={classes.logo} />
                     </Avatar>
-                    <Typography component="h1" variant="h5" color='primary'>
-                        LogIn
-        </Typography>
+
                     <form className={classes.form} onSubmit={formik.handleSubmit}>
                         <TextField
                             className={classes.tfRoot}
@@ -165,10 +177,6 @@ export default function SignIn() {
                             helperText={formik.touched.username && formik.errors.username}
                             InputLabelProps={{
                                 shrink: true,
-                                style: { color: 'white' }
-                            }}
-                            inputProps={{
-                                style: { color: 'white' }
                             }}
                             InputProps={{
                                 classes: {
@@ -192,22 +200,20 @@ export default function SignIn() {
                             helperText={formik.touched.password && formik.errors.password}
                             InputLabelProps={{
                                 shrink: true,
-                                style: { color: 'white' }
-                            }}
-                            inputProps={{
-                                style: { color: 'white' }
+
                             }}
                             InputProps={{
                                 classes: {
                                     notchedOutline: classes.notchedOutline
                                 }
                             }}
+
                         />
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
-                            color="primary"
+                            color="secondary"
                             className={classes.submit}
                             disabled={isLoading}
                         >
@@ -217,7 +223,7 @@ export default function SignIn() {
                         </Button>
                         <Grid container>
                             <Grid item>
-                                <Link href="/signup" variant="subtitle1" color='primary'>
+                                <Link href="/signup" variant="subtitle1" color='secondary'>
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100vW',
         borderBottomRightRadius: '10%',
         borderBottomLeftRadius: '10%',
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.primary.light,
     },
     listView: {
         marginTop: 10,

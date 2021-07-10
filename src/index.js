@@ -11,29 +11,23 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 
 const theme = createMuiTheme({
   palette: {
-    type: 'dark',
+    type: 'light',
     primary: {
-      main: '#3500D3',
-      light: '#240090',
-      dark: '#0c0032',
+      main: '#1F1946', //blue
+      light: '#60DFE6',// light blue
     },
     secondary: {
-      main: '#190061',
+      main: '#F27450', // orange
+      light: '#1FBBE3' //baby blue
     },
     background: {
-      default: '#282828',
-      paper: '#0c0032'
+      default: '#E5F9E7', //greenish
+      paper: '#ffffff'
     },
     text: {
-      primary: '#ffffff',
+      primary: '#000000',
       secondary: '#000000',
-
     }
-
-
-
-
-
   },
 });
 

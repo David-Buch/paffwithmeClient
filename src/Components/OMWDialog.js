@@ -11,13 +11,16 @@ import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
-import { BiTime } from 'react-icons/bi'
+import { BiTime } from 'react-icons/bi';
+import { GiSmokingPipe } from 'react-icons/gi';
 import { AlertContext, OMWContext, UserContext } from '../Data/Contexts';
 import { sendPushtoOne, sendSmokeData } from '../Helpers/Api';
 
 
 const useStyles = makeStyles((theme) => ({
-
+    dialogRoot: {
+        backgroundColor: theme.palette.secondary.light,
+    }
 }));
 
 export default function OMWDialog(props) {
@@ -66,69 +69,72 @@ export default function OMWDialog(props) {
         setOmwData({ ...omwData, isOpen: false });
     }
     return (
-        <Dialog open={props.open} aria-labelledby="Title">
-            <DialogTitle id="form-dialog-title" color='textPrimary' >Smoke away!</DialogTitle>
-            <DialogContent>
-                <DialogContentText color='textPrimary'>
-                    How long will it take you to join the smoke session?
-                </DialogContentText>
-                <div className={classes.root}>
-                    <Typography id="input-slider" gutterBottom>
-                        Minutes
-                    </Typography>
-                    <Grid container spacing={2} alignItems="center">
-                        <Grid item>
-                            <BiTime size={20} />
-                        </Grid>
-                        <Grid item xs>
-                            <Slider
-                                step={5}
-                                max={30}
-                                marks
+        <Dialog open={props.open} aria-labelledby="Title" >
+            <div className={classes.dialogRoot}>
+                <DialogTitle id="form-dialog-title" color='textPrimary' >Smoke away!</DialogTitle>
+                <DialogContent>
+                    <DialogContentText color='textPrimary'>
+                        How long will it take you to join the smoke session?
+                    </DialogContentText>
+                    <div className={classes.root}>
+                        <Typography id="input-slider" gutterBottom>
+                            Minutes
+                        </Typography>
+                        <Grid container spacing={2} alignItems="center">
+                            <Grid item>
+                                <BiTime size={20} />
+                            </Grid>
+                            <Grid item xs>
+                                <Slider
+                                    step={5}
+                                    max={30}
+                                    marks
 
-                                value={typeof value === 'number' ? value : 0}
-                                onChange={handleSliderChange}
-                                aria-labelledby="input-slider"
+                                    value={typeof value === 'number' ? value : 0}
+                                    onChange={handleSliderChange}
+                                    aria-labelledby="input-slider"
 
-                            />
+                                />
+                            </Grid>
+                            <Grid item>
+                                <Input
+                                    className={classes.input}
+                                    value={value}
+                                    margin="dense"
+                                    onChange={handleInputChange}
+                                    onBlur={handleBlur}
+                                    inputProps={{
+                                        step: 5,
+                                        min: 0,
+                                        max: 30,
+                                        type: 'number',
+                                        'aria-labelledby': 'input-slider',
+                                    }}
+                                    endAdornment={'min'}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                            <Input
-                                className={classes.input}
-                                value={value}
-                                margin="dense"
-                                onChange={handleInputChange}
-                                onBlur={handleBlur}
-                                inputProps={{
-                                    step: 5,
-                                    min: 0,
-                                    max: 30,
-                                    type: 'number',
-                                    'aria-labelledby': 'input-slider',
-                                }}
-                                endAdornment={'min'}
-                            />
-                        </Grid>
-                    </Grid>
-                </div>
+                    </div>
 
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => setOmwData({ ...omwData, isOpen: false })}
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}>
-                    Cancel
-                </Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={handleSubmit}
-                >
-                    Send
-                </Button>
-            </DialogActions>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOmwData({ ...omwData, isOpen: false })}
+                        variant="contained"
+                        color="secondary"
+                        className={classes.button}>
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        startIcon={< GiSmokingPipe />}
+                        className={classes.button}
+                        onClick={handleSubmit}
+                    >
+                        Send
+                    </Button>
+                </DialogActions>
+            </div>
         </Dialog>
     )
 }

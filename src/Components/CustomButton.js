@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
         borderRadius: '20%',
 
+
         '&:hover, &$focusVisible': {
             zIndex: 1,
             '& $imageBackdrop': {
@@ -36,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
         height: '90%',
         width: '90%',
         borderRadius: '20%',
+        borderColor: '#1F1946',
+        border: 5,
     },
     imageBackdrop: {
 
