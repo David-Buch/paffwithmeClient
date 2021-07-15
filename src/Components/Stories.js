@@ -39,7 +39,7 @@ export default function Stories(props) {
                 dataSource={props.data}
                 renderItem={item => (
                     <div>
-                        {!item.currentlySmoking ? ( // change later !!!!!
+                        {item.currentlySmoking ? (
                             <div className={classes.story}>
                                 <IconButton onClick={() => props.onClick(item.username)}>
                                     <Box border={3} color='#F27450'

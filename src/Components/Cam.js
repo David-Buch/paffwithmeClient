@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { HiOutlineCamera } from "react-icons/hi";
 
 const useStyles = makeStyles((theme) => ({
-    PicButton: {},
+    button: { display: 'flex', justifyContent: 'center', width: '60vW' },
 }));
 
 const Input = styled('input')({
@@ -25,7 +25,7 @@ function Cam(props) {
                     multiple
                     type="file"
                     onChange={props.onChange} />
-                <Button variant="contained" component="span"
+                <Button variant="contained"
                     color="secondary"
                     className={classes.button}
                     endIcon={<HiOutlineCamera />}>

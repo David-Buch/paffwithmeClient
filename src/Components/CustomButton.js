@@ -1,5 +1,6 @@
 import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -55,13 +56,15 @@ export default function CustomButton(props) {
     const classes = useStyles();
 
     return (
-        <div className={classes.ButtonRoot}>
-            <ButtonBase
-                onClick={props.onClick}
-                className={classes.buttonBase}
-                focusVisibleClassName={classes.focusVisible}>
-                <img className={classes.img} src={props.img} alt='hi' />
-            </ButtonBase>
-        </div>
+        <Box border={11} borderRadius='20%' borderColor='#1F1946'>
+            <div className={classes.ButtonRoot}>
+                <ButtonBase
+                    onClick={props.onClick}
+                    className={classes.buttonBase}
+                    focusVisibleClassName={classes.focusVisible}>
+                    <img className={classes.img} src={props.img} alt='hi' />
+                </ButtonBase>
+            </div>
+        </Box>
     )
 }

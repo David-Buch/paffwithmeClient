@@ -176,11 +176,9 @@ export default function SheetForm() {
                                 helperText={formik.touched.endTime && formik.errors.endTime}
                                 InputLabelProps={{
                                     shrink: true,
-                                    style: { color: 'white' }
                                 }}
                                 inputProps={{
                                     step: 300, // 5 min
-                                    style: { color: 'white' }
                                 }}
                                 InputProps={{
                                     classes: {
@@ -214,33 +212,36 @@ export default function SheetForm() {
                             }}
                             InputLabelProps={{
                                 shrink: true,
-                                style: { color: 'white' }
                             }}
-                            inputProps={{
-                                style: { color: 'white' }
-                            }}
-
-
                         />
                     </Grid>
-                    <Grid item xs={12}>
-                        <Cam onChange={handleImageChange} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <div className={classes.buttonDiv}>
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="secondary"
-                                className={classes.button}
-                                endIcon={<BiSend />}
-                            >
-                                Send
-                            </Button>
-                        </div>
+                    <Grid item xs={12}
+                        container
+                        spacing={2}
+                        direction="column"
+                        justify="flex-start"
+                        alignItems="center"
+                    >
+                        <Grid item xs={12}>
+                            <Cam onChange={handleImageChange} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <div className={classes.buttonDiv}>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="secondary"
+                                    className={classes.button}
+                                    endIcon={<BiSend />}
+                                >
+                                    Send
+                                </Button>
+                            </div>
+                        </Grid>
                     </Grid>
                 </Grid>
+
             </form>
-        </div>
+        </div >
     );
 }

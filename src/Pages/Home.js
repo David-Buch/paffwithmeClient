@@ -9,6 +9,10 @@ import BottomSheet from '../Components/BottomSheet';
 import { BottomSheetContext, UserContext, AlertContext } from '../Data/Contexts';
 import { getLive } from '../Helpers/Api';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { BiColumns } from 'react-icons/bi';
+import { MdCancel } from 'react-icons/md';
+import { IconButton } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,7 +30,13 @@ const useStyles = makeStyles((theme) => ({
     },
     gif: {
         borderRadius: 20,
-    }
+    },
+    isSmokingDiv: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 }));
 
 export default function Home() {
@@ -49,9 +59,14 @@ export default function Home() {
                 if (res.message) { setAlert({ isAlert: true, status: 'warning', message: res.message }) }
                 else { setAlert({ isAlert: true, status: 'error', message: res.error }) }
             }
-        })
+        });
+        //get Smoking durration
 
-    }, [])
+    }, []);
+
+    const caculateTimePercentig = () => {
+    };
+
 
     return (
 
@@ -78,6 +93,7 @@ export default function Home() {
                             onClick={() => { console.log('onClick'); }}
                         />
                     </Grid>
+
                     <Grid item xs={6}>
                         <CustomButton
                             img='img/tabacco/sundays-fantasy.jpg'
@@ -89,15 +105,21 @@ export default function Home() {
 
                 <Grid item xs={12} >
                     {isSmoking ? (
-                        <div>
+                        <div className={classes.isSmokingDiv}>
                             <img src='img/smokePipe.gif'
                                 alt='smokingPipegif'
                                 height='200'
                                 width='220'
                                 className={classes.gif} />
-                            <Typography>
-                                Gut Paff!
-                            </Typography>
+                            <LinearProgress variant='determinate' value={50} color='secondary' style={{ height: 15, width: '85%', padding: 10, margin: '5px' }} />
+                            <div style={{ display: 'flex' }}>
+                                <Typography style={{ padding: 12 }} variant='h6'>
+                                    Have a nice Smoke !  {/* still smoking for ... min */}
+                                </Typography>
+                                <IconButton style={{ color: 'red' }}>
+                                    <MdCancel />
+                                </IconButton>
+                            </div>
                         </div>) :
                         (
                             <div className={classes.bottomHalf}>
